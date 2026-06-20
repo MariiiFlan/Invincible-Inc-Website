@@ -1,0 +1,45 @@
+/* =====================================================================
+   NPC STAT CARD  (append to the end of styles.css)
+   Rendered by wiki.js buildStatCard() on article pages with e.stats.
+   ===================================================================== */
+.stat-card{
+  background:linear-gradient(180deg,#15171d,#0f1116);
+  border:2px solid var(--panel-line);
+  border-left:6px solid var(--cat,var(--blue));
+  padding:20px 22px;
+  margin:0 0 30px;
+  box-shadow:5px 5px 0 rgba(0,0,0,.45);
+}
+
+/* identity chips: race / power / affiliation / rep */
+.stat-ident{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.stat-chip{
+  font-family:'Barlow';font-weight:800;font-size:12px;letter-spacing:.5px;
+  text-transform:uppercase;color:#fff;
+  background:var(--input-bg);border:2px solid var(--panel-line);
+  padding:6px 12px;display:inline-flex;align-items:center;gap:6px;
+}
+.stat-chip b{color:var(--muted-3);font-weight:700;}
+.stat-chip--rep-pos{border-color:var(--green);color:var(--green);}
+.stat-chip--rep-pos b{color:var(--green);opacity:.7;}
+.stat-chip--rep-neg{border-color:var(--red);color:#ff8a8a;}
+.stat-chip--rep-neg b{color:#ff8a8a;opacity:.7;}
+.stat-chip--rep-neu{border-color:var(--input-line);color:var(--muted);}
+
+/* stat bars: STR / Dura / Mastery / Health / Flight */
+.stat-bars{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;}
+.stat-bar-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;}
+.stat-bar-label{
+  font-family:'Barlow';font-weight:800;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:var(--muted-2);
+}
+.stat-bar-val{font-family:'Anton',sans-serif;font-style:italic;font-size:17px;color:#fff;}
+.stat-bar-track{
+  height:9px;background:var(--input-bg);
+  border:1px solid var(--input-line);overflow:hidden;
+}
+.stat-bar-fill{height:100%;}
+
+@media (max-width:560px){
+  .stat-bars{grid-template-columns:1fr;}
+}

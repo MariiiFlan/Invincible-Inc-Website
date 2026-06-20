@@ -100,7 +100,18 @@ window.WIKI_DATA = {
       "name": "Invincible",
       "type": "Mob",
       "wip": false,
-      "sections": []
+      "sections": [],
+      "stats": {
+        "race": "Human-Viltrumite",
+        "power": "Viltrumite",
+        "reputation": 250,
+        "affiliation": "The G.D.A",
+        "str": 220,
+        "dura": 210,
+        "mastery": 25,
+        "health": 340,
+        "flight": 8
+      }
     },
     {
       "id": "omniman",
@@ -108,7 +119,18 @@ window.WIKI_DATA = {
       "name": "Omniman",
       "type": "Mob",
       "wip": false,
-      "sections": []
+      "sections": [],
+      "stats": {
+        "race": "Viltrumite",
+        "power": "Viltrumite",
+        "reputation": -400,
+        "affiliation": "Viltrum-Empire",
+        "str": 280,
+        "dura": 260,
+        "mastery": 55,
+        "health": 400,
+        "flight": 12
+      }
     },
     {
       "id": "invinciboy",
@@ -116,7 +138,18 @@ window.WIKI_DATA = {
       "name": "InvinciBoy",
       "type": "Mob",
       "wip": false,
-      "sections": []
+      "sections": [],
+      "stats": {
+        "race": "Human-Viltrumite",
+        "power": "Viltrumite",
+        "reputation": 250,
+        "affiliation": "None",
+        "str": 250,
+        "dura": 280,
+        "mastery": 55,
+        "health": 340,
+        "flight": 10
+      }
     },
     {
       "id": "atom-eve",
@@ -124,7 +157,18 @@ window.WIKI_DATA = {
       "name": "Atom Eve",
       "type": "Mob",
       "wip": false,
-      "sections": []
+      "sections": [],
+      "stats": {
+        "race": "Human",
+        "power": "Atomic Manipulation",
+        "reputation": 420,
+        "affiliation": "The G.D.A",
+        "str": 45,
+        "dura": 55,
+        "mastery": 85,
+        "health": 120,
+        "flight": 3
+      }
     },
     {
       "id": "red-rush",
@@ -132,7 +176,17 @@ window.WIKI_DATA = {
       "name": "Red Rush",
       "type": "Mob",
       "wip": false,
-      "sections": []
+      "sections": [],
+      "stats": {
+        "race": "Human",
+        "power": "Super Speed",
+        "reputation": 420,
+        "affiliation": "The G.D.A",
+        "str": 90,
+        "dura": 60,
+        "mastery": 40,
+        "health": 150
+      }
     },
     {
       "id": "criminal",
@@ -140,7 +194,17 @@ window.WIKI_DATA = {
       "name": "Criminal",
       "type": "Mob",
       "wip": false,
-      "sections": []
+      "sections": [],
+      "stats": {
+        "race": "Human / Monster",
+        "power": "None",
+        "reputation": -25,
+        "affiliation": "None",
+        "str": "1–45",
+        "dura": "1–35",
+        "mastery": 0,
+        "health": "25–65"
+      }
     },
     {
       "id": "tech-jacket",
@@ -148,7 +212,18 @@ window.WIKI_DATA = {
       "name": "Tech Jacket",
       "type": "Mob",
       "wip": false,
-      "sections": []
+      "sections": [],
+      "stats": {
+        "race": "Human",
+        "power": "Tech Jacket",
+        "reputation": 420,
+        "affiliation": "The Coalition",
+        "str": 220,
+        "dura": 240,
+        "mastery": 60,
+        "health": 340,
+        "flight": 6
+      }
     },
     {
       "id": "viltrumites",
@@ -156,7 +231,18 @@ window.WIKI_DATA = {
       "name": "Viltrumites",
       "type": "Mob",
       "wip": false,
-      "sections": []
+      "sections": [],
+      "stats": {
+        "race": "Viltrumite",
+        "power": "Viltrumite",
+        "reputation": -400,
+        "affiliation": "Viltrum-Empire",
+        "str": "100–230",
+        "dura": "100–240",
+        "mastery": "10–45",
+        "health": "200–300",
+        "flight": "5–10"
+      }
     },
     {
       "id": "mister-liu",
@@ -172,7 +258,17 @@ window.WIKI_DATA = {
       "name": "Damian Darkblood",
       "type": "NPC",
       "wip": false,
-      "sections": []
+      "sections": [],
+      "stats": {
+        "race": "Demon",
+        "power": "Demon Magic",
+        "reputation": -50,
+        "affiliation": "None",
+        "str": 100,
+        "dura": 120,
+        "mastery": 70,
+        "health": 120
+      }
     },
     {
       "id": "conquest",
@@ -180,7 +276,18 @@ window.WIKI_DATA = {
       "name": "Conquest",
       "type": "Boss",
       "wip": false,
-      "sections": []
+      "sections": [],
+      "stats": {
+        "race": "Viltrumite",
+        "power": "Viltrumite",
+        "reputation": -500,
+        "affiliation": "Viltrum-Empire",
+        "str": 350,
+        "dura": 370,
+        "mastery": 85,
+        "health": 500,
+        "flight": 12
+      }
     },
     {
       "id": "original-guardians-of-the-globe",

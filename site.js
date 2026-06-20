@@ -12,10 +12,10 @@
 
 /* Add / rename / reorder pages here. key = data-page value. */
 const NAV = [
-  { key: "home",    label: "Home",   href: "index.html"      },
-  { key: "wiki",    label: "Wiki",   href: "wiki.html"       },
-  { key: "server",  label: "Server", href: "server.html"     },
-  { key: "forum",   label: "Forum",  href: "forum.html"      },
+  { key: "home",    label: "Home",   href: "/"      },
+  { key: "wiki",    label: "Wiki",   href: "/wiki"       },
+  { key: "server",  label: "Server", href: "/server"     },
+  { key: "forum",   label: "Forum",  href: "/forum"      },
 ];
 
 /* External links used in the footer. */
@@ -24,7 +24,7 @@ const LINKS = {
   discord:    "#",   // paste your Discord invite
   youtube:    "#",   // paste your YouTube channel URL
   patreon:    "#",   // paste your Patreon URL
-  changelogs: "changelogs.html",
+  changelogs: "/changelogs",
 };
 
 function buildHeader(active){
@@ -33,7 +33,7 @@ function buildHeader(active){
   ).join("");
   return `
   <header class="site-header">
-    <a class="brand" href="index.html"><span class="b1">INVINCIBLE</span> <span class="b2">INCORPORATED</span></a>
+    <a class="brand" href="/"><span class="b1">INVINCIBLE</span> <span class="b2">INCORPORATED</span></a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false">MENU</button>
     <nav class="nav">${links}</nav>
   </header>`;
@@ -42,14 +42,14 @@ function buildHeader(active){
 function buildFooter(){
   return `
   <footer class="site-footer">
-    <a class="brand" href="index.html"><span class="b1">INVINCIBLE</span> <span class="b2">INC</span></a>
+    <a class="brand" href="/"><span class="b1">INVINCIBLE</span> <span class="b2">INC</span></a>
     <nav class="foot-links">
       <a href="${LINKS.discord}">Discord</a>
       <a href="${LINKS.youtube}">YouTube</a>
       <a href="${LINKS.patreon}">Patreon</a>
       <a href="${LINKS.curseforge}">CurseForge</a>
-      <a href="changelogs.html">Changelogs</a>
-      <a href="index.html#wall">Feedback</a>
+      <a href="/changelogs">Changelogs</a>
+      <a href="/#wall">Feedback</a>
     </nav>
     <div class="foot-copy">INVINCIBLE INCORPORATED &copy; ${new Date().getFullYear()} &middot; A mod by DarknessDxD &middot; Not affiliated with the Invincible rights holders.</div>
   </footer>`;
