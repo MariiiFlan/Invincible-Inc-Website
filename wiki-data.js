@@ -103,7 +103,7 @@ window.WIKI_DATA = {
       "sections": [],
       "stats": {
         "race": "Human-Viltrumite",
-        "power": "Viltrumite",
+        "power": "Smart-Atoms",
         "reputation": 250,
         "affiliation": "The G.D.A",
         "str": 220,
@@ -122,7 +122,7 @@ window.WIKI_DATA = {
       "sections": [],
       "stats": {
         "race": "Viltrumite",
-        "power": "Viltrumite",
+        "power": "Smart-Atoms",
         "reputation": -400,
         "affiliation": "Viltrum-Empire",
         "str": 280,
@@ -141,7 +141,7 @@ window.WIKI_DATA = {
       "sections": [],
       "stats": {
         "race": "Human-Viltrumite",
-        "power": "Viltrumite",
+        "power": "Smart-Atoms",
         "reputation": 250,
         "affiliation": "None",
         "str": 250,
@@ -216,7 +216,7 @@ window.WIKI_DATA = {
       "sections": [],
       "stats": {
         "race": "Viltrumite",
-        "power": "Viltrumite",
+        "power": "Smart-Atoms",
         "reputation": -400,
         "affiliation": "Viltrum-Empire",
         "str": "100–230",
@@ -230,7 +230,7 @@ window.WIKI_DATA = {
           "name": "Conquest",
           "stats": {
             "race": "Viltrumite",
-            "power": "Viltrumite",
+            "power": "Smart-Atoms",
             "reputation": -500,
             "affiliation": "Viltrum-Empire",
             "str": 350,
@@ -244,7 +244,7 @@ window.WIKI_DATA = {
           "name": "General Kregg",
           "stats": {
             "race": "Viltrumite",
-            "power": "Viltrumite",
+            "power": "Smart-Atoms",
             "reputation": -400,
             "affiliation": "Viltrum-Empire",
             "str": 270,
@@ -258,7 +258,7 @@ window.WIKI_DATA = {
           "name": "Lucan",
           "stats": {
             "race": "Viltrumite",
-            "power": "Viltrumite",
+            "power": "Smart-Atoms",
             "reputation": -400,
             "affiliation": "Viltrum-Empire",
             "str": 260,
@@ -272,7 +272,7 @@ window.WIKI_DATA = {
           "name": "Thula",
           "stats": {
             "race": "Viltrumite",
-            "power": "Viltrumite",
+            "power": "Smart-Atoms",
             "reputation": -400,
             "affiliation": "Viltrum-Empire",
             "str": 235,
@@ -285,7 +285,7 @@ window.WIKI_DATA = {
           "name": "Anissa",
           "stats": {
             "race": "Viltrumite",
-            "power": "Viltrumite",
+            "power": "Smart-Atoms",
             "reputation": -400,
             "affiliation": "Viltrum-Empire",
             "str": 245,
@@ -332,7 +332,7 @@ window.WIKI_DATA = {
       "sections": [],
       "stats": {
         "race": "Viltrumite",
-        "power": "Viltrumite",
+        "power": "Smart-Atoms",
         "reputation": -500,
         "affiliation": "Viltrum-Empire",
         "str": 350,

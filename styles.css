@@ -513,3 +513,31 @@ img{max-width:100%;display:block;}
 .art-section{margin-bottom:28px;}
 .art-section h2{font-family:'Anton',sans-serif;font-style:italic;font-size:26px;color:var(--blue);margin:0 0 10px;}
 .art-section p{color:var(--muted);font-size:16px;line-height:1.7;margin:0;white-space:pre-wrap;}
+
+/* =====================================================================
+   MOBILE FIXES (appended) — stops the sideways white-strip overflow and
+   the cramped look on phones. Additive overrides only; nothing above is
+   modified.
+   ===================================================================== */
+html, body { overflow-x: hidden; max-width: 100%; }
+*, *::before, *::after { overflow-wrap: break-word; }
+
+@media (max-width: 640px){
+  /* sections that still carried desktop 56px side padding on phones */
+  .wall      { padding-left: 20px; padding-right: 20px; }
+  .social    { padding-left: 20px; padding-right: 20px; }
+  .wiki-wrap { padding: 40px 20px 70px; }
+
+  /* oversized display titles were running off-screen */
+  .wiki-hero h1                     { font-size: 44px; }
+  .cat-page-title, .art-page-title  { font-size: 36px; }
+  .wall-title                       { font-size: 34px; }
+
+  /* wiki list rows: the fixed 160px + 90px columns overflowed — collapse them */
+  .entry-row            { grid-template-columns: 1fr auto; gap: 8px; }
+  .entry-row.entry-head { display: none; }
+  .entry-type           { display: none; }
+
+  /* two-column stat / roadmap grids stack into one column on phones */
+  .ii-grid2 { grid-template-columns: 1fr !important; }
+}
