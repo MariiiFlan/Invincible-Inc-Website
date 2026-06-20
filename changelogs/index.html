@@ -15,20 +15,160 @@
   <main class="page">
     <div class="page-eyebrow">THE PAST</div>
     <h1>THE <span class="accent">CHANGELOGS</span></h1>
-    <p class="lede">Every update, fix and new power. Newest at the top — replace these with your real entries.</p>
-    <div class="log">
-      <div class="log-entry">
-        <div class="ver">v0.0.0 — Example</div>
-        <div class="date">Edit me in changelogs.html</div>
-        <ul>
-          <li>Added: example new power</li>
-          <li>Fixed: example bug</li>
-          <li>Changed: example balance tweak</li>
-        </ul>
-      </div>
-    </div>
+    <p class="lede">Every update, fix and new power. Newest at the top.</p>
+    <div class="log" id="log"></div>
   </main>
   <div id="site-footer"></div>
   <script src="/site.js"></script>
+
+  <script>
+  /* ============================================================
+     CHANGELOG DATA — newest first.
+     Each entry: { ver, title, desc?, items?, groups? }
+       items:  [ ["add"|"chg"|"rem", "text"], ... ]
+       groups: [ { name:"Sub-heading", items:[ ... ] }, ... ]
+     Tags: add = ADDED (green), chg = CHANGED (yellow), rem = REMOVED (red)
+     Wrap code/IDs in `backticks` to style them.
+     ============================================================ */
+  const CHANGELOG = [
+    {
+      ver: "v1.4.5",
+      title: "The big content drop — NPCs, races, suits, powers & the genetics pipeline",
+      groups: [
+        { name: "New NPCs / entities", items: [
+          ["add", "Conquest, General Kregg, Damian Darkblood, Lucan, Thula, Anissa, Monster Girl, Darkwing, unnamed Viltrumites, and the Spirit Dragon — plus new projectiles (Hell Fire Arrow, Dragon's Breath, Bat Attack)."]
+        ]},
+        { name: "New races, sub-races & powers", items: [
+          ["add", "Races: Demon, Unopan, and Unopan (Modified); Sub-race: Vampire (plus Werewolf/Lycanthropy and Dornian progression)."],
+          ["add", "Power: Demon Magic (with custom animations)."]
+        ]},
+        { name: "New suits & gear", items: [
+          ["add", "Darkwing v1 & v2 suits, Dracula's Suit, Viltrumite Suit, Werewolf Hunter set, Monster Curse set, and a Cloak — each with its own Blueprint."]
+        ]},
+        { name: "Genetics / injection crafting chain", items: [
+          ["add", "Blocks: Centrifuge, Molecular Synthesizer (Genetic Infuser), Deepslate Uranium."],
+          ["add", "Items: Raw Uranium, Raw Unstable Uranium, decaying uranium particles, Empty/Blood Vials, White Blood Cells (isolated + infused), modified genetic samples, the Injection Gun (multiple loaded states), and Demonius Ex Mortum."],
+          ["add", "Raw Uranium smelting recipe."]
+        ]},
+        { name: "Effects & systems", items: [
+          ["add", "~25 new effects, including Fear (with sounds), Mist/Bat Swarm form, Intangibility, Shadow Step, Blood Lust, Blood Sacrifice, Soul Drain, Hypnosis, Claws, Radiation Poisoning, Dragon's Rush/Breath, Spirit Dragon transformation, and partial/full transformations."],
+          ["add", "15 advancements — origin story, gaining your race, each race (Human/Viltrumite/Demon/Unopan/Dornian), sub-races, and power unlocks (Atomic Manipulation, Demon Magic, Super Speed, Tech Jacket)."],
+          ["chg", "Updated race stat scaling for the new races, plus NPC spawning, attacks, and flight AI to handle the new roster."],
+          ["rem", "The old suit-creation blocks (Sewing Machine & Suit Creation Bench) — suit creation now uses the blueprint + injection workflow."]
+        ]}
+      ]
+    },
+    {
+      ver: "v1.4.2",
+      title: "Stat reset + adrenaline rework",
+      items: [
+        ["add", "Stats now reset on respawn."],
+        ["chg", "Reworked the Adrenaline effect."]
+      ]
+    },
+    {
+      ver: "v1.4.1",
+      title: "Bloodline & movement tuning",
+      items: [
+        ["chg", "Tuned bloodline items and bloodline stat scaling."],
+        ["chg", "Adjusted sprint speed, flight display, Atomic Blast, and Sonic Clap (while flying); updated the creative tab."]
+      ]
+    },
+    {
+      ver: "v1.4",
+      title: "Bloodlines + Genetics menu + Heavy Attack",
+      items: [
+        ["add", "Bloodlines system — 10 bloodlines (Anissa, Argall, Cho, Conners, Conquest, Clan Darkblood, Thokk, Thragg, Allen/Unopan, Wilkins) with items, textures, random assignment, a blood-type display, and a new Bloodlines creative tab."],
+        ["add", "Genetics menu — a new in-game interface for genetics."],
+        ["add", "Heavy Attack — hold to perform heavy attacks, with their own cooldowns and a dedicated keybind."],
+        ["add", "Super Speed active toggle, plus Atom Eve atomic-flight visuals/models and a thruster texture."],
+        ["add", "A new input system for abilities and attacks — smoother, more responsive controls."],
+        ["chg", "Reworked combat into a new fighting-style animation system (Beast, Standard, and Viltrumite styles) with flight-combat animations."],
+        ["chg", "Renamed the \"Flight Mode\" keybind to \"Movement Passive.\""],
+        ["rem", "The old combat handling — replaced by the new fighting-style system."]
+      ]
+    },
+    {
+      ver: "v1.3.5",
+      title: "Combat Mode cleanup",
+      items: [
+        ["add", "Combat Mode now ends correctly when it should."],
+        ["chg", "Adjusted Combat Mode and Battle Mode so their effects apply and clear cleanly."]
+      ]
+    },
+    {
+      ver: "v1.3",
+      title: "Battle Mode fixes",
+      items: [
+        ["chg", "Reworked the Battle Mode toggle for more reliable on/off behavior."]
+      ]
+    },
+    {
+      ver: "v1.2",
+      title: "Camera Lock + stat caps + groups",
+      items: [
+        ["add", "Camera Lock effect — locks the player's camera and mouse input."],
+        ["add", "Stat limiter system — caps for Strength, Durability, Speed, and Mastery."],
+        ["add", "Group creation (party-system groundwork)."],
+        ["chg", "Reworked how race/power stats are applied (Human, Viltrumite, Atomic, Super Speed, Tech Jacket, Beast) to respect the new caps."]
+      ]
+    },
+    {
+      ver: "v1.1",
+      title: "Spawn balancing & loot pass",
+      items: [
+        ["add", "Heroes and criminals now spawn on the surface only."],
+        ["add", "Blueprints can now appear in village chest loot."],
+        ["add", "Battle Mode effect support."],
+        ["chg", "Cut NPC spawn weights across the board: Criminal 60→20, Tech Jacket NPC 24→14, Atom Eve 25→15, Invinciboy 22→14, Red Rush 20→15, Invincible 25→20, Omni-Man 13→10."],
+        ["rem", "An old leftover vanilla mob-tag override."]
+      ]
+    },
+    {
+      ver: "v1.0",
+      title: "Reboot Launch",
+      desc: "Baseline 1.21.1 reboot release. All later entries are measured against this build."
+    }
+  ];
+
+  (function(){
+    function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function fmt(s){ // escape, then style `code` spans
+      return esc(s).replace(/`([^`]+)`/g, '<code style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86em;background:#0B0E15;border:1px solid #2a2f3a;border-radius:3px;padding:1px 5px;color:#cdd2da;">$1</code>');
+    }
+    var TAG = {
+      add: { label:"ADDED",   bg:"rgba(158,255,42,.14)", color:"#9eff2a", bd:"rgba(158,255,42,.45)" },
+      chg: { label:"CHANGED", bg:"rgba(255,210,61,.14)", color:"#FFD23D", bd:"rgba(255,210,61,.45)" },
+      rem: { label:"REMOVED", bg:"rgba(225,21,21,.16)",  color:"#ff8a8a", bd:"rgba(225,21,21,.5)" }
+    };
+    function tagChip(t){
+      var c = TAG[t] || TAG.chg;
+      return '<span style="display:inline-block;font-family:\'Barlow\',sans-serif;font-weight:800;font-size:10px;letter-spacing:.5px;padding:2px 7px;border-radius:3px;margin-right:9px;background:'+c.bg+';color:'+c.color+';border:1px solid '+c.bd+';white-space:nowrap;vertical-align:1.5px;">'+c.label+'</span>';
+    }
+    function itemLi(it){
+      return '<li style="margin:7px 0;color:#c2c7d0;font-size:15px;line-height:1.6;list-style:none;">'+tagChip(it[0])+'<span>'+fmt(it[1])+'</span></li>';
+    }
+    function groupHeader(name){
+      return '<div style="font-family:\'Barlow\',sans-serif;font-weight:800;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#2E6BFF;margin:18px 0 6px;">'+esc(name)+'</div>';
+    }
+
+    var html = CHANGELOG.map(function(e){
+      var inner = '<div class="ver">'+esc(e.ver)+'</div>';
+      if (e.title) inner += '<div style="font-family:\'Anton\',sans-serif;font-style:italic;font-size:20px;color:#fff;margin:2px 0 10px;line-height:1.1;">'+esc(e.title)+'</div>';
+      if (e.desc)  inner += '<p style="color:#9aa0ab;font-size:15px;line-height:1.6;margin:0 0 4px;">'+fmt(e.desc)+'</p>';
+      if (e.items && e.items.length){
+        inner += '<ul style="margin:6px 0 0;padding:0;">'+e.items.map(itemLi).join("")+'</ul>';
+      }
+      if (e.groups && e.groups.length){
+        inner += e.groups.map(function(g){
+          return groupHeader(g.name)+'<ul style="margin:0;padding:0;">'+g.items.map(itemLi).join("")+'</ul>';
+        }).join("");
+      }
+      return '<div class="log-entry">'+inner+'</div>';
+    }).join("");
+
+    document.getElementById("log").innerHTML = html;
+  })();
+  </script>
 </body>
 </html>

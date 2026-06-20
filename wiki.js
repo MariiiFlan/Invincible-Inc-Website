@@ -120,7 +120,7 @@
       '</div></div>';
   }
 
-  function buildStatCard(st, accent){
+  function buildStatCard(st, accent, title){
     if (!st) return "";
     accent = accent || "#2E6BFF";
     var rep = st.reputation;
@@ -148,10 +148,197 @@
       statBar("Health",       st.health,  500, "#9eff2a") +
       statBar("Flight Speed", st.flight,  20,  "#46d6ff");
 
-    return '<div style="background:#15171d;border:2px solid #2a2f3a;border-left:6px solid '+accent+';padding:20px 22px;margin:0 0 30px;box-shadow:5px 5px 0 rgba(0,0,0,.45);">'+
+    return '<div style="background:#15171d;border:2px solid #2a2f3a;border-left:6px solid '+accent+';padding:20px 22px;margin:0 0 18px;box-shadow:5px 5px 0 rgba(0,0,0,.45);">'+
+      (title ? '<div style="font-family:\'Anton\',sans-serif;font-style:italic;font-size:20px;color:#fff;margin:0 0 14px;display:flex;align-items:center;gap:9px;"><span style="width:13px;height:13px;background:'+accent+';transform:skewX(-12deg);display:inline-block;flex:none;"></span>'+esc(title)+'</div>' : '')+
       '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;">'+chips+'</div>'+
       (bars ? '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;">'+bars+'</div>' : '')+
       '</div>';
+  }
+
+  /* ---------------- SMART ARTICLE BODY RENDERER ---------------- */
+  function sectionHeading(text){
+    if (!text) return "";
+    return '<div style="font-family:\'Anton\',sans-serif;font-style:italic;font-size:22px;color:#2E6BFF;margin:0 0 12px;display:flex;align-items:center;gap:10px;">'+
+      '<span style="width:14px;height:14px;background:#2E6BFF;transform:skewX(-12deg);display:inline-block;flex:none;"></span>'+esc(text)+'</div>';
+  }
+
+  function abilityRow(name, lvl, desc, opts){
+    var badge  = (opts && opts.badge)  || "#FFD23D";
+    var accent = (opts && opts.accent) || "#2E6BFF";
+    return '<div style="background:#15171d;border:1px solid #2a2f3a;border-left:4px solid '+accent+';padding:13px 16px;margin:0 0 8px;display:flex;gap:14px;align-items:flex-start;">'+
+      '<span style="font-family:\'Barlow\',sans-serif;font-weight:800;font-size:11px;letter-spacing:.5px;background:'+badge+';color:#0a0b0e;padding:4px 9px;white-space:nowrap;">LVL '+esc(lvl)+'</span>'+
+      '<div><div style="font-family:\'Anton\',sans-serif;font-style:italic;font-size:17px;color:#fff;">'+esc(name)+'</div>'+
+      (desc ? '<div style="color:#9aa0ab;font-size:14px;line-height:1.5;margin-top:2px;">'+esc(desc)+'</div>' : '')+
+      '</div></div>';
+  }
+
+  function calloutBox(heading, body, border, titleCol, bg, textCol, icon){
+    var lines = String(body).replace(/\r/g,"").split("\n")
+      .map(function(l){return l.trim();}).filter(function(l){return l!=="";});
+    var inner = lines.map(function(l){
+      if (l.charAt(0) === "•") return '<div style="padding:1px 0;">• '+esc(l.replace(/^•\s*/,""))+'</div>';
+      return '<div style="padding:1px 0;">'+esc(l)+'</div>';
+    }).join("");
+    return '<div style="background:'+bg+';border:2px solid '+border+';border-left:6px solid '+border+';padding:16px 18px;margin:0 0 22px;">'+
+      '<div style="font-family:\'Anton\',sans-serif;font-style:italic;font-size:17px;color:'+titleCol+';margin-bottom:8px;">'+icon+' '+esc(heading.toUpperCase())+'</div>'+
+      '<div style="color:'+textCol+';font-size:14px;line-height:1.7;">'+inner+'</div></div>';
+  }
+
+  function loreBlock(body){
+    return '<div style="border-left:4px solid #6b7280;padding:6px 0 6px 18px;margin:0 0 24px;">'+
+      '<div style="font-family:\'Bangers\',cursive;letter-spacing:2px;font-size:13px;color:#6b7280;margin-bottom:6px;">FROM THE COMIC / SHOW</div>'+
+      '<div style="color:#b9bdc6;font-size:14px;line-height:1.7;font-style:italic;white-space:pre-wrap;">'+esc(body)+'</div></div>';
+  }
+
+  var LVL_RE = /^(.*?)\(Lvl:\s*(\d+)\)\s*$/;
+
+  function parseBody(body, opts){
+    var lines = String(body).replace(/\r/g,"").split("\n");
+    var n = lines.length, i = 0, html = "";
+    var bulletBuf = [], paraBuf = [];
+    function flushBullets(){
+      if (!bulletBuf.length) return;
+      html += '<ul style="margin:0 0 14px;padding:0;list-style:none;">'+
+        bulletBuf.map(function(b){
+          return '<li style="position:relative;padding-left:18px;margin:4px 0;color:#b9bdc6;font-size:15px;line-height:1.6;">'+
+            '<span style="position:absolute;left:0;color:#2E6BFF;font-weight:800;">▪</span>'+esc(b)+'</li>';
+        }).join("")+'</ul>';
+      bulletBuf = [];
+    }
+    function flushPara(){
+      if (!paraBuf.length) return;
+      html += '<p style="color:#b9bdc6;font-size:15px;line-height:1.7;margin:0 0 14px;white-space:pre-wrap;">'+esc(paraBuf.join("\n"))+'</p>';
+      paraBuf = [];
+    }
+    while (i < n){
+      var trimmed = lines[i].trim();
+      var m = trimmed.match(LVL_RE);
+      if (m){
+        flushPara(); flushBullets();
+        var name = m[1].trim(), lvl = m[2], desc = [];
+        i++;
+        while (i < n){
+          var t2 = lines[i].trim();
+          if (LVL_RE.test(t2)) break;
+          if (t2 !== "") desc.push(t2);
+          i++;
+        }
+        html += abilityRow(name, lvl, desc.join(" "), opts);
+        continue;
+      }
+      if (trimmed.charAt(0) === "•"){ flushPara(); bulletBuf.push(trimmed.replace(/^•\s*/,"")); i++; continue; }
+      if (trimmed === ""){ flushPara(); flushBullets(); i++; continue; }
+      if (/:$/.test(trimmed) && trimmed.length <= 28){
+        flushPara(); flushBullets();
+        html += '<div style="font-family:\'Barlow\',sans-serif;font-weight:800;font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:#FFD23D;margin:12px 0 4px;">'+esc(trimmed.replace(/:$/,""))+'</div>';
+        i++; continue;
+      }
+      flushBullets(); paraBuf.push(trimmed); i++;
+    }
+    flushPara(); flushBullets();
+    return html;
+  }
+
+  function rmEmoji(label){
+    var l = label.toLowerCase();
+    if (/power/.test(l)) return "⚡";
+    if (/npc/.test(l)) return "👥";
+    if (/system/.test(l)) return "⚙️";
+    if (/structure/.test(l)) return "🏗️";
+    if (/gameplay|survival/.test(l)) return "🎮";
+    if (/event/.test(l)) return "📅";
+    if (/race/.test(l)) return "🧬";
+    if (/bug/.test(l)) return "🐛";
+    if (/multiverse|dimension/.test(l)) return "🌌";
+    if (/suit|item|armor|gear/.test(l)) return "🛡️";
+    if (/world/.test(l)) return "🌍";
+    return "📦";
+  }
+
+  function rmStatus(text, shipped){
+    var t = text.trim(), icon, color, strike = "";
+    if (/^✅/.test(t) || /\(done\)/i.test(t)){ icon="✔"; color="#9eff2a"; t=t.replace(/^✅\s*/,"").replace(/\s*\(done\)/i,""); }
+    else if (/^❌/.test(t) || /\(cut\)/i.test(t)){ icon="✘"; color="#E11515"; strike="text-decoration:line-through;opacity:.65;"; t=t.replace(/^❌\s*/,"").replace(/\s*\(cut\)/i,""); }
+    else if (/\(wip\)|concept made|set up done|no real function/i.test(t)){ icon="◑"; color="#FFD23D"; }
+    else if (/\(maybe\)|\(tbd\)/i.test(t) || /^tbd$/i.test(t)){ icon="◻"; color="#6b7280"; }
+    else if (shipped){ icon="✔"; color="#9eff2a"; }
+    else { icon="◻"; color="#6b7280"; }
+    return { icon:icon, color:color, text:t, strike:strike };
+  }
+
+  function rmItem(text, shipped){
+    var s = rmStatus(text, shipped);
+    return '<div style="display:flex;gap:8px;align-items:baseline;margin:3px 0;'+s.strike+'">'+
+      '<span style="color:'+s.color+';font-weight:800;flex:none;font-size:13px;">'+s.icon+'</span>'+
+      '<span style="color:#cdd2da;font-size:14px;line-height:1.5;">'+esc(s.text)+'</span></div>';
+  }
+
+  function rmSingleBox(text, shipped){
+    var s = rmStatus(text, shipped);
+    return '<div style="grid-column:1 / -1;background:#15171d;border:1px solid #2a2f3a;padding:13px 17px;display:flex;align-items:center;gap:10px;'+s.strike+'">'+
+      '<span style="color:'+s.color+';font-weight:800;flex:none;font-size:14px;">'+s.icon+'</span>'+
+      '<span style="font-family:\'Anton\',sans-serif;font-style:italic;font-size:16px;color:#fff;">'+rmEmoji(s.text)+' '+esc(s.text)+'</span></div>';
+  }
+
+  function parseRoadmap(body, shipped){
+    var blocks = String(body).replace(/\r/g,"").split(/\n\s*\n/);
+    var introHtml = "", units = [];
+    blocks.forEach(function(block){
+      var lines = block.split("\n").map(function(l){return l.trim();}).filter(Boolean);
+      if (!lines.length) return;
+      var bullets = lines.filter(function(l){return l.charAt(0) === "•";});
+      if (bullets.length === 0){
+        introHtml += '<p style="color:#b9bdc6;font-size:15px;line-height:1.7;margin:0 0 16px;">'+esc(lines.join(" ").replace(/^✅\s*/,""))+'</p>';
+      } else if (lines.length === 1){
+        units.push({ single: lines[0].replace(/^•\s*/,"") });
+      } else {
+        var label = lines[0].replace(/^•\s*/,"").replace(/:$/,"");
+        var items = lines.slice(1).map(function(l){return l.replace(/^•\s*/,"");}).filter(Boolean);
+        units.push({ label: label, items: items });
+      }
+    });
+    var grid = units.map(function(u){
+      if (u.single !== undefined) return rmSingleBox(u.single, shipped);
+      return '<div style="background:#15171d;border:1px solid #2a2f3a;padding:15px 17px;">'+
+        '<div style="font-family:\'Anton\',sans-serif;font-style:italic;font-size:16px;color:#2E6BFF;margin-bottom:10px;">'+rmEmoji(u.label)+' '+esc(u.label)+'</div>'+
+        u.items.map(function(it){return rmItem(it, shipped);}).join("")+
+      '</div>';
+    }).join("");
+    return introHtml + (grid ? '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;">'+grid+'</div>' : "");
+  }
+
+  function renderSection(s, cat, shipped){
+    var heading = s.heading || "", body = s.body || "", hl = heading.toLowerCase();
+    if (/weakness/.test(hl))    return calloutBox(heading, body, "#E11515", "#ff8a8a", "#1a0f0f", "#e6c9c9", "⚠");
+    if (/acquisition/.test(hl)) return calloutBox(heading, body, "#9eff2a", "#9eff2a", "#0f1a12", "#cfe9c4", "★");
+    if (/lore/.test(hl))        return loreBlock(body);
+    if (cat === "roadmap"){
+      return '<section style="margin-bottom:26px;">'+
+        (/overview/.test(hl) ? "" : sectionHeading(heading))+ parseRoadmap(body, shipped) +'</section>';
+    }
+    var opts = /passive/.test(hl) ? {badge:"#9eff2a", accent:"#9eff2a"} : {badge:"#FFD23D", accent:"#2E6BFF"};
+    return '<section style="margin-bottom:26px;">'+ sectionHeading(heading)+ parseBody(body, opts) +'</section>';
+  }
+
+  function renderBody(e, c){
+    var cat = c ? c.id : e.cat;
+    var shipped = false;
+    if (cat === "roadmap"){
+      shipped = e.shipped === true || (e.sections || []).some(function(s){ return /✅/.test(s.body || ""); });
+    }
+    var html = "";
+    if (cat === "roadmap" && e.type){
+      var label, bg, fg;
+      if (e.wip){ label = "⏳ IN PROGRESS"; bg = "#FFD23D"; fg = "#0a0b0e"; }
+      else if (shipped){ label = "✅ SHIPPED"; bg = "#9eff2a"; fg = "#0a0b0e"; }
+      else { label = "🗓 PLANNED"; bg = "#2a2f3a"; fg = "#cdd2da"; }
+      html += '<div style="margin:0 0 22px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">'+
+        '<span style="font-family:\'Anton\',sans-serif;font-style:italic;font-size:15px;background:#2E6BFF;color:#fff;padding:5px 14px;">'+esc(e.type)+'</span>'+
+        '<span style="font-family:\'Barlow\',sans-serif;font-weight:800;font-size:11px;letter-spacing:1px;background:'+bg+';color:'+fg+';padding:6px 12px;">'+label+'</span>'+
+        '</div>';
+    }
+    (e.sections || []).forEach(function(s){ html += renderSection(s, cat, shipped); });
+    return html;
   }
 
   /* ---------------- ARTICLE (article.html) ---------------- */
@@ -178,20 +365,21 @@
     title.textContent = e.name.toUpperCase();
     if (wip) wip.style.display = e.wip ? "inline-block" : "none";
 
-    var statHtml = e.stats ? buildStatCard(e.stats, c ? c.color : "#2E6BFF") : "";
+    var accent = c ? c.color : "#2E6BFF";
+    var statHtml = e.stats ? buildStatCard(e.stats, accent) : "";
+    var rosterHtml = (e.roster && e.roster.length)
+      ? e.roster.map(function(m){ return buildStatCard(m.stats, accent, m.name); }).join("")
+      : "";
     var secs = e.sections || [];
-    var secHtml = secs.map(function(s){
-      return '<section class="art-section"><h2>'+esc(s.heading||"")+'</h2>'+
-        '<p>'+esc(s.body||"")+'</p></section>';
-    }).join("");
+    var secHtml = renderBody(e, c);
 
-    if (!statHtml && !secs.length){
+    if (!statHtml && !rosterHtml && !secs.length){
       body.innerHTML = "";
       if (notice) notice.style.display = "block";
       return;
     }
     if (notice) notice.style.display = "none";
-    body.innerHTML = statHtml + secHtml;
+    body.innerHTML = statHtml + rosterHtml + secHtml;
   }
 
   function catById(DATA, id){

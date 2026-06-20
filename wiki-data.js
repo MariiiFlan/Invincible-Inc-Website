@@ -171,24 +171,6 @@ window.WIKI_DATA = {
       }
     },
     {
-      "id": "red-rush",
-      "cat": "npcs",
-      "name": "Red Rush",
-      "type": "Mob",
-      "wip": false,
-      "sections": [],
-      "stats": {
-        "race": "Human",
-        "power": "Super Speed",
-        "reputation": 420,
-        "affiliation": "The G.D.A",
-        "str": 90,
-        "dura": 60,
-        "mastery": 40,
-        "health": 150
-      }
-    },
-    {
       "id": "criminal",
       "cat": "npcs",
       "name": "Criminal",
@@ -242,7 +224,78 @@ window.WIKI_DATA = {
         "mastery": "10–45",
         "health": "200–300",
         "flight": "5–10"
-      }
+      },
+      "roster": [
+        {
+          "name": "Conquest",
+          "stats": {
+            "race": "Viltrumite",
+            "power": "Viltrumite",
+            "reputation": -500,
+            "affiliation": "Viltrum-Empire",
+            "str": 350,
+            "dura": 370,
+            "mastery": 85,
+            "health": 500,
+            "flight": 12
+          }
+        },
+        {
+          "name": "General Kregg",
+          "stats": {
+            "race": "Viltrumite",
+            "power": "Viltrumite",
+            "reputation": -400,
+            "affiliation": "Viltrum-Empire",
+            "str": 270,
+            "dura": 260,
+            "mastery": 75,
+            "health": 380,
+            "flight": 10
+          }
+        },
+        {
+          "name": "Lucan",
+          "stats": {
+            "race": "Viltrumite",
+            "power": "Viltrumite",
+            "reputation": -400,
+            "affiliation": "Viltrum-Empire",
+            "str": 260,
+            "dura": 275,
+            "mastery": 45,
+            "health": 360,
+            "flight": 12
+          }
+        },
+        {
+          "name": "Thula",
+          "stats": {
+            "race": "Viltrumite",
+            "power": "Viltrumite",
+            "reputation": -400,
+            "affiliation": "Viltrum-Empire",
+            "str": 235,
+            "dura": 240,
+            "mastery": 60,
+            "health": 320
+          }
+        },
+        {
+          "name": "Anissa",
+          "stats": {
+            "race": "Viltrumite",
+            "power": "Viltrumite",
+            "reputation": -400,
+            "affiliation": "Viltrum-Empire",
+            "str": 245,
+            "dura": 265,
+            "mastery": 50,
+            "health": 350,
+            "flight": 15
+          }
+        }
+      ]
     },
     {
       "id": "mister-liu",
@@ -295,7 +348,35 @@ window.WIKI_DATA = {
       "name": "Original Guardians Of The Globe",
       "type": "Mobs",
       "wip": true,
-      "sections": []
+      "sections": [],
+      "roster": [
+        {
+          "name": "Red Rush",
+          "stats": {
+            "race": "Human",
+            "power": "Super Speed",
+            "reputation": 420,
+            "affiliation": "The G.D.A",
+            "str": 90,
+            "dura": 60,
+            "mastery": 40,
+            "health": 150
+          }
+        },
+        {
+          "name": "Darkwing",
+          "stats": {
+            "race": "Human",
+            "power": "None",
+            "reputation": 300,
+            "affiliation": "The G.D.A",
+            "str": 55,
+            "dura": 60,
+            "mastery": 80,
+            "health": 140
+          }
+        }
+      ]
     },
     {
       "id": "one-for-all",
@@ -1412,7 +1493,8 @@ window.WIKI_DATA = {
           "heading": "Overview",
           "body": "Setting up the foundation of the mod that way future updates are easier and faster to release!\n\n• Races:\n• Viltrumite\n• Human Viltrumite\n• Thraxan Viltrumite\n• Human\n• Beast\n\n• Powers (Core Set):\n• Viltrumite\n• Beast\n• Super Speed\n• Atomic Manipulation\n• Tech Jacket\n\n• Systems:\n• Stat System\n• Set Up Basic Team System (WIP)\n• Reputation\n• Affiliations (Set up done, no real function yet)\n\n• NPCs:\n• Omni-Man\n• Invincible\n• Atom Eve\n• Red Rush\n• Invinciboy (Invincible Blue Suit)\n• Criminals\n\n• Gameplay:\n• Survival play"
         }
-      ]
+      ],
+      "shipped": true
     },
     {
       "id": "monsters-and-curses",
@@ -1425,7 +1507,8 @@ window.WIKI_DATA = {
           "heading": "Overview",
           "body": "Expands core gameplay with new content, systems, and world interaction based on Monsters and Curses.\n\n• 3-5 New Powers\n• Monster Curse (Maybe)\n• Duplication (Maybe)\n• Dragon Spirit\n• Vampire (Sub Race)\n• Demon Magic\n\n• More NPCs\n• Conqeust\n• Mister Liu\n• Titan\n• Viltrumites\n• Guardians Of The Globe\n• Zechariah + Dracula\n• Damian Darkblood\n• Cecil\n• Art Rosenbaum\n• Lizard League\n• TBD\n\n• Structures (TBD)\n• Art’s Suit Sailor\n• TBD\n• TBD\n\n• Bug Fixes\n\n• Power Acquisition System For Survival"
         }
-      ]
+      ],
+      "shipped": true
     },
     {
       "id": "missions-and-events-update",
