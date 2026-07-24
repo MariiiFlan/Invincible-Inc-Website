@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Battle Pass — Invincible Inc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#000;color:#fff;font-family:'Barlow',sans-serif}
+a{text-decoration:none}
+.bar{background:#000;border-bottom:2px solid #1c1c1c;padding:20px 56px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.crumb{font-family:'Bangers',cursive;font-size:13px;letter-spacing:3px;color:#E11515}
+.h1{font-family:'Anton';font-style:italic;font-size:30px;line-height:.9}
+.secure{font-weight:800;font-size:11px;letter-spacing:1px;color:#8a90a0}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#9eff2a;box-shadow:0 0 8px #9eff2a;margin-right:8px}
+.wrap{max-width:1240px;margin:0 auto;padding:30px 56px 72px}
+.back{font-family:'Anton';font-style:italic;font-size:14px;color:#8a90a0}
+.back:hover{color:#FFD23D}
+.cols{display:grid;grid-template-columns:340px 1fr 260px;gap:28px;align-items:start;margin-top:18px}
+.artbox{position:relative;background:#E11515;border:3px solid #fff;box-shadow:7px 7px 0 rgba(0,0,0,.6);overflow:hidden;min-height:420px}
+.artbox img{display:block;width:100%;height:100%;min-height:420px;object-fit:cover}
+.badge{position:absolute;left:12px;bottom:12px;background:#000;color:#ff8a8a;font-weight:900;font-size:10px;letter-spacing:1.5px;padding:4px 10px}
+.tagline{font-family:'Bangers',cursive;font-size:16px;letter-spacing:2px;color:#ff8a8a}
+.title{font-family:'Anton';font-style:italic;font-size:58px;line-height:.84;margin:4px 0 12px;text-shadow:4px 4px 0 rgba(0,0,0,.5)}
+.lore{font-size:15px;color:#c8ccd4;line-height:1.55;margin:0 0 20px}
+h3{font-family:'Anton';font-style:italic;font-size:20px;margin:0 0 12px}
+.list{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.item{font-size:14px;color:#e6e8ec;line-height:1.45;border-left:3px solid #E11515;padding-left:12px}
+.notebox{background:#171308;border:2px solid #FFD23D;border-left:5px solid #FFD23D;padding:14px 16px}
+.notebox b{display:block;font-family:'Anton';font-style:italic;font-size:15px;color:#FFD23D;margin-bottom:5px;font-weight:400}
+.notebox p{font-size:13px;color:#f3e6c4;line-height:1.5;margin:0}
+.buybox{background:#0d0f14;border:3px solid #fff;box-shadow:5px 5px 0 rgba(0,0,0,.6);padding:20px}
+.once{font-weight:800;font-size:11px;letter-spacing:1px;color:#5b6270}
+.bigprice{font-family:'Anton';font-style:italic;font-size:46px;line-height:.9;color:#ff8a8a}
+.inst{font-weight:600;font-size:12px;color:#8a90a0;margin-bottom:14px}
+.lbl{display:block;font-weight:800;font-size:10px;letter-spacing:1px;color:#5b6270;margin-bottom:5px}
+input{width:100%;background:#05070c;border:2px solid #243044;color:#fff;font-family:'Barlow';font-weight:700;font-size:14px;padding:10px 12px;margin-bottom:8px;outline:none}
+.msg{display:none;font-weight:700;font-size:11px;color:#ff5a5a;margin-bottom:8px}
+.buy{display:block;text-align:center;cursor:pointer;background:#FFD23D;border:3px solid #fff;padding:13px;font-family:'Anton';font-style:italic;font-size:18px;color:#111;transition:all .12s}
+.buy:hover{background:#E11515;color:#fff}
+.safe{display:flex;align-items:center;gap:7px;margin-top:12px;font-weight:700;font-size:10px;letter-spacing:.5px;color:#5b6270}
+.safe span{width:8px;height:8px;border-radius:50%;background:#9eff2a}
+.side{margin-top:26px}
+.sideh{font-family:'Anton';font-style:italic;font-size:16px;margin-bottom:10px}
+.orow{display:flex;justify-content:space-between;align-items:center;background:#0d0f14;border:2px solid #1c1c1c;border-left:5px solid #2E6BFF;padding:10px 12px;margin-bottom:8px}
+.orow:hover{background:#15171d}
+.oname{font-family:'Anton';font-style:italic;font-size:15px;color:#fff}
+.oprice{font-family:'Anton';font-style:italic;font-size:14px;color:#FFD23D}
+@media(max-width:1100px){.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div>
+    <div class="crumb">SHOP &rsaquo; BATTLE PASS</div>
+    <div class="h1">BATTLE PASS</div>
+  </div>
+  <div class="secure"><span class="dot"></span>SECURE CHECKOUT &middot; INSTANT IN-GAME DELIVERY</div>
+</div>
+
+<div class="wrap">
+  <a class="back" href="/shop/index.html">&lsaquo; BACK TO SERVER SHOP</a>
+
+  <div class="cols">
+
+    <div class="artbox">
+      <img id="bpImg" alt="Battle Pass art">
+      <div class="badge" id="bpBadge"></div>
+    </div>
+
+    <div>
+      <div class="tagline" id="bpTagline"></div>
+      <div class="title" id="bpTitle"></div>
+      <p class="lore" id="bpLore"></p>
+
+      <h3>THIS PASS INCLUDES</h3>
+      <div class="list" id="bpIncludes"></div>
+
+      <div class="notebox">
+        <b>NOTE</b>
+        <p id="bpNote"></p>
+      </div>
+    </div>
+
+    <div>
+      <div class="buybox">
+        <div class="once">ONE-TIME PURCHASE</div>
+        <div class="bigprice" id="bpPrice"></div>
+        <div class="inst">instant delivery</div>
+        <label class="lbl">MINECRAFT USERNAME</label>
+        <input id="mcUser" placeholder="Your username" autocomplete="off" spellcheck="false">
+        <div class="msg" id="mcErr"></div>
+        <a class="buy" id="buyBtn">GET THE PASS</a>
+        <div class="safe"><span></span>SECURE &middot; PAYPAL &amp; CARD</div>
+      </div>
+
+      <div class="side">
+        <div class="sideh">ALSO AVAILABLE</div>
+        <a class="orow" href="/shop/shop-ranks/index.html">
+          <span class="oname">RANKS</span><span class="oprice">FROM $9.99</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ==========================================================
+   EDIT THIS BLOCK EACH SEASON — nothing else needs changing
+   ========================================================== */
+
+var SEASON      = 'SEASON 0';                 // season name
+var IMAGE       = 'battlepass.png';           // image in this same folder
+var PRICE       = '$14.99';                   // displayed price
+var PACKAGE_ID  = 0;                          // Tebex package ID (0 = not live yet)
+
+var TAGLINE  = 'THE SEASON STARTS NOW.';
+var LORE     = 'Unlock the full reward track for the season. Level it up as you play and claim every tier.';
+
+var INCLUDES = [
+  'Full Season 0 reward track',
+  'Exclusive seasonal cosmetics',
+  'Season 0 tag in-game',
+  'Bonus in-game currency'
+];
+
+var NOTE = 'The Battle Pass covers the current season only. Rewards must be claimed before the season ends.';
+
+/* ==========================================================
+   Below here is the checkout wiring — no need to touch it
+   ========================================================== */
+
+var TOKEN = 'v7x1-d56f91e2669f8af87a3481d30edc66e27808fe60';
+var API   = 'https://headless.tebex.io/api';
+
+document.title = SEASON + ' Battle Pass — Invincible Inc';
+document.getElementById('bpImg').src = IMAGE;
+document.getElementById('bpBadge').textContent = SEASON;
+document.getElementById('bpTagline').textContent = TAGLINE;
+document.getElementById('bpTitle').textContent = SEASON + ' PASS';
+document.getElementById('bpLore').textContent = LORE;
+document.getElementById('bpPrice').textContent = PRICE;
+document.getElementById('bpNote').textContent = NOTE;
+
+document.getElementById('bpIncludes').innerHTML = INCLUDES.map(function(t){
+  var safe = String(t).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+  });
+  return '<div class="item">' + safe + '</div>';
+}).join('');
+
+try {
+  var saved = localStorage.getItem('iwb_mc_user');
+  if (saved) document.getElementById('mcUser').value = saved;
+} catch(e){}
+
+document.getElementById('buyBtn').addEventListener('click', function(){
+  var btn   = this;
+  var input = document.getElementById('mcUser');
+  var err   = document.getElementById('mcErr');
+  var name  = (input.value || '').trim();
+
+  err.style.display = 'none';
+
+  if (!name) {
+    err.style.color = '#ff5a5a';
+    err.textContent = 'Enter your Minecraft username first.';
+    err.style.display = 'block';
+    input.focus();
+    return;
+  }
+
+  try { localStorage.setItem('iwb_mc_user', name); } catch(e){}
+
+  if (!PACKAGE_ID) {
+    err.style.color = '#3ddc84';
+    err.textContent = 'Battle Pass goes live soon — hang tight!';
+    err.style.display = 'block';
+    return;
+  }
+
+  var restore = btn.textContent;
+  btn.textContent = 'LOADING...';
+  btn.style.pointerEvents = 'none';
+  btn.style.opacity = '.7';
+
+  fetch(API + '/accounts/' + TOKEN + '/baskets', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body: JSON.stringify({
+      username: name,
+      complete_url: location.origin + '/shop/index.html',
+      cancel_url: location.href,
+      complete_auto_redirect: true
+    })
+  })
+  .then(function(r){ if(!r.ok) throw new Error('basket'); return r.json(); })
+  .then(function(j){
+    var b = j.data, ident = b.ident;
+    var checkout = (b.links && b.links.checkout) || null;
+    return fetch(API + '/baskets/' + ident + '/packages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({ package_id: PACKAGE_ID, quantity: 1 })
+    })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(a){
+      if (a && a.data && a.data.links && a.data.links.checkout) checkout = a.data.links.checkout;
+      return fetch(API + '/accounts/' + TOKEN + '/baskets/' + ident + '/auth?returnUrl=' + encodeURIComponent(checkout || location.href))
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(au){
+          var list = Array.isArray(au) ? au : (au && au.data ? au.data : []);
+          if (list && list.length && list[0] && list[0].url) return list[0].url;
+          return checkout;
+        })
+        .catch(function(){ return checkout; });
+    });
+  })
+  .then(function(dest){
+    if (dest) { location.href = dest; return; }
+    throw new Error('no checkout');
+  })
+  .catch(function(){
+    btn.textContent = restore;
+    btn.style.pointerEvents = '';
+    btn.style.opacity = '';
+    err.style.color = '#ff5a5a';
+    err.textContent = 'Something went wrong — please try again.';
+    err.style.display = 'block';
+  });
+});
+</script>
+</body>
+</html>
