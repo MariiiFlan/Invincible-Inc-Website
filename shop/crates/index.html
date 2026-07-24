@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crates — Invincible Inc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#000;color:#fff;font-family:'Barlow',sans-serif}
+a{text-decoration:none}
+.bar{background:#000;border-bottom:2px solid #1c1c1c;padding:20px 56px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.crumb{font-family:'Bangers',cursive;font-size:13px;letter-spacing:3px;color:#FFD23D}
+.h1{font-family:'Anton';font-style:italic;font-size:30px;line-height:.9}
+.secure{font-weight:800;font-size:11px;letter-spacing:1px;color:#8a90a0}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#9eff2a;box-shadow:0 0 8px #9eff2a;margin-right:8px}
+.wrap{max-width:1400px;margin:0 auto;padding:30px 56px 72px}
+.back{font-family:'Anton';font-style:italic;font-size:14px;color:#8a90a0}
+.back:hover{color:#FFD23D}
+.kicker{font-family:'Bangers',cursive;font-size:15px;letter-spacing:3px;color:#FFD23D;margin-top:24px}
+.big{font-family:'Anton';font-style:italic;font-size:40px;line-height:.9;margin:2px 0 6px}
+.sub{font-size:14px;color:#9aa3b2;margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.card{position:relative;display:flex;flex-direction:column;border:3px solid #fff;box-shadow:6px 6px 0 rgba(0,0,0,.6);overflow:hidden;transition:transform .12s}
+.card:hover{transform:translateY(-5px)}
+.art{position:relative;height:190px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.glyph{font-family:'Anton';font-size:86px;color:rgba(0,0,0,.35);line-height:1;user-select:none}
+.art img{width:100%;height:190px;object-fit:cover;display:block}
+.dots{position:absolute;inset:0;opacity:.15;background-image:radial-gradient(#000 1.3px,transparent 1.6px);background-size:9px 9px;pointer-events:none}
+.fade{position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(transparent,rgba(0,0,0,.88))}
+.meta{position:absolute;left:13px;right:13px;bottom:11px}
+.cname{font-family:'Anton';font-style:italic;font-size:20px;line-height:.95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cprice{font-family:'Anton';font-style:italic;font-size:20px;color:#FFD23D}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.body{background:#0d0f14;padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:10px}
+.desc{font-size:12.5px;color:#9aa3b2;line-height:1.45;flex:1}
+.btn{display:block;text-align:center;cursor:pointer;background:#FFD23D;border:2px solid #fff;padding:9px;font-family:'Anton';font-style:italic;font-size:14px;color:#111;transition:all .12s}
+.btn:hover{background:#3ddc84}
+.btn.off{background:#1c2029;color:#5b6270;border-color:#2a2f3a;cursor:not-allowed}
+.userbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 22px}
+.lbl{font-weight:800;font-size:11px;letter-spacing:1px;color:#5b6270}
+input{background:#05070c;border:2px solid #243044;color:#fff;font-family:'Barlow';font-weight:700;font-size:14px;padding:9px 12px;outline:none;min-width:220px}
+.msg{font-weight:700;font-size:12px;color:#ff5a5a}
+@media(max-width:1250px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div>
+    <div class="crumb">SHOP &rsaquo; CRATES</div>
+    <div class="h1">CRATE KEYS</div>
+  </div>
+  <div class="secure"><span class="dot"></span>SECURE CHECKOUT &middot; INSTANT IN-GAME DELIVERY</div>
+</div>
+
+<div class="wrap">
+  <a class="back" href="/shop/index.html">&lsaquo; BACK TO SERVER SHOP</a>
+
+  <div class="kicker">CRACK THEM OPEN</div>
+  <div class="big">CRATES</div>
+  <p class="sub">Every crate has its own loot pool. Keys are used at the crate hall on the server.</p>
+
+  <div class="userbar">
+    <span class="lbl">MINECRAFT USERNAME</span>
+    <input id="mcUser" placeholder="Your username" autocomplete="off" spellcheck="false">
+    <span class="msg" id="mcMsg"></span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+/* ==========================================================
+   EDIT THIS LIST — add/remove crates, change prices & images
+   img:'' shows the glyph instead. Add art later by putting a file
+   in this folder and setting img:'name.png'.
+   pkg = Tebex package ID. Leave 0 until the package exists.
+   ========================================================== */
+
+var CRATES = [
+  { name:'VOTE CRATE',       price:'FREE',  img:'', glyph:'★', color:'#3ddc84', pkg:0,
+    desc:'Earned by voting for the server. No purchase needed.' },
+
+  { name:'ATOMIC CRATE',     price:'$5',    img:'', glyph:'✦', color:'#EC4899', pkg:0,
+    desc:'Entry-level loot pool. A solid first crate.' },
+
+  { name:'IMMORTAL CRATE',   price:'$10',   img:'', glyph:'∞', color:'#FFD23D', pkg:0,
+    desc:'Stronger rolls than Atomic, with better odds on rare drops.' },
+
+  { name:'INVINCIBLE CRATE', price:'$20',   img:'', glyph:'✪', color:'#E11515', pkg:0,
+    desc:'High-tier loot pool with a real shot at standout rewards.' },
+
+  { name:'CONQUEST CRATE',   price:'$30',   img:'', glyph:'♛', color:'#8B2FE0', pkg:0,
+    desc:'The top rank crate. The deepest reward pool of the four.' },
+
+  { name:'DRIP CRATE',       price:'$10',   img:'', glyph:'✧', color:'#FF7A2F', pkg:0,
+    desc:'Cosmetics only — capes, drip and other looks.' },
+
+  { name:'WEAPONS CRATE',    price:'$10',   img:'', glyph:'⚔', color:'#9aa3b2', pkg:0,
+    desc:'Weapons and gear pulled from the mod arsenal.' },
+
+  { name:'BLOODLINE CRATE',  price:'$20',   img:'', glyph:'✹', color:'#B3122B', pkg:0,
+    desc:'Roll for bloodlines and the traits that come with them.' },
+
+  { name:'RACE/POWER CRATE', price:'$25',   img:'', glyph:'⚡', color:'#FF2FD0', pkg:0,
+    desc:'Roll for races and powers from across the mod.' },
+
+  { name:'CUSTOMS CRATE',    price:'$45',   img:'', glyph:'✶', color:'#2E6BFF', pkg:0,
+    desc:'All custom powers and races made for players by Dark. Every custom that gets created is added to this crate.' }
+];
+
+/* ==========================================================
+   Below here is the checkout wiring — no need to touch it
+   ========================================================== */
+
+var TOKEN = 'v7x1-d56f91e2669f8af87a3481d30edc66e27808fe60';
+var API   = 'https://headless.tebex.io/api';
+
+function esc(t){
+  return String(t == null ? '' : t).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+  });
+}
+
+document.getElementById('grid').innerHTML = CRATES.map(function(c, i){
+  var buyable = c.pkg > 0;
+  var label   = buyable ? 'BUY KEY' : (c.price === 'FREE' ? 'VOTE TO EARN' : 'COMING SOON');
+  return '<div class="card" style="background:' + c.color + '">'
+       +   '<div class="art">'
+       +     (c.img
+               ? '<img src="' + esc(c.img) + '" alt="' + esc(c.name) + '">'
+               : '<div class="glyph">' + esc(c.glyph || '◆') + '</div>')
+       +     '<div class="dots"></div><div class="fade"></div>'
+       +     '<div class="meta"><div class="row">'
+       +       '<span class="cname">' + esc(c.name) + '</span>'
+       +       '<span class="cprice">' + esc(c.price) + '</span>'
+       +     '</div></div>'
+       +   '</div>'
+       +   '<div class="body">'
+       +     '<div class="desc">' + esc(c.desc) + '</div>'
+       +     '<a class="btn' + (buyable ? '' : ' off') + '" data-i="' + i + '">' + label + '</a>'
+       +   '</div>'
+       + '</div>';
+}).join('');
+
+try {
+  var saved = localStorage.getItem('iwb_mc_user');
+  if (saved) document.getElementById('mcUser').value = saved;
+} catch(e){}
+
+document.getElementById('grid').addEventListener('click', function(ev){
+  var btn = ev.target.closest('.btn');
+  if (!btn) return;
+
+  var crate = CRATES[+btn.getAttribute('data-i')];
+  var input = document.getElementById('mcUser');
+  var msg   = document.getElementById('mcMsg');
+  var name  = (input.value || '').trim();
+  msg.textContent = '';
+
+  if (!crate.pkg) {
+    msg.style.color = '#3ddc84';
+    msg.textContent = crate.price === 'FREE'
+      ? 'Vote for the server in-game to earn this crate.'
+      : crate.name + ' goes live soon — hang tight!';
+    return;
+  }
+
+  if (!name) {
+    msg.style.color = '#ff5a5a';
+    msg.textContent = 'Enter your Minecraft username first.';
+    input.focus();
+    return;
+  }
+  try { localStorage.setItem('iwb_mc_user', name); } catch(e){}
+
+  var restore = btn.textContent;
+  btn.textContent = 'LOADING...';
+  btn.style.pointerEvents = 'none';
+  btn.style.opacity = '.7';
+
+  fetch(API + '/accounts/' + TOKEN + '/baskets', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body: JSON.stringify({
+      username: name,
+      complete_url: location.origin + '/shop/crates/index.html',
+      cancel_url: location.href,
+      complete_auto_redirect: true
+    })
+  })
+  .then(function(r){ if(!r.ok) throw new Error('basket'); return r.json(); })
+  .then(function(j){
+    var b = j.data, ident = b.ident;
+    var checkout = (b.links && b.links.checkout) || null;
+    return fetch(API + '/baskets/' + ident + '/packages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({ package_id: crate.pkg, quantity: 1 })
+    })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(a){
+      if (a && a.data && a.data.links && a.data.links.checkout) checkout = a.data.links.checkout;
+      return fetch(API + '/accounts/' + TOKEN + '/baskets/' + ident + '/auth?returnUrl=' + encodeURIComponent(checkout || location.href))
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(au){
+          var list = Array.isArray(au) ? au : (au && au.data ? au.data : []);
+          if (list && list.length && list[0] && list[0].url) return list[0].url;
+          return checkout;
+        })
+        .catch(function(){ return checkout; });
+    });
+  })
+  .then(function(dest){
+    if (dest) { location.href = dest; return; }
+    throw new Error('no checkout');
+  })
+  .catch(function(){
+    btn.textContent = restore;
+    btn.style.pointerEvents = '';
+    btn.style.opacity = '';
+    msg.style.color = '#ff5a5a';
+    msg.textContent = 'Something went wrong — please try again.';
+  });
+});
+</script>
+</body>
+</html>
