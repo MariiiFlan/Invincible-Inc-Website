@@ -213,7 +213,12 @@ window.WIKI_DATA = {
       "name": "Viltrumites",
       "type": "Mob",
       "wip": false,
-      "sections": [],
+      "sections": [
+        {
+          "heading": "New in v2.0",
+          "body": "The Viltrumite roster was split into proper entities:\n• Male Viltrumite — new entity\n• Female Viltrumite — new entity\n• Unnamed Viltrumite — the old plural `unnamed_viltrumites` entity, renamed to singular, now with its own spawn egg\n\nTwo new Viltrumite suits also drop with the update: Viltrumite (Onyx) and the Viltrumite Council suit, plus the Viltrumite Prisoner (Prisonincible) look."
+        }
+      ],
       "stats": {
         "race": "Viltrumite",
         "power": "Smart-Atoms",
@@ -426,8 +431,13 @@ window.WIKI_DATA = {
       "cat": "npcs",
       "name": "Zechariah",
       "type": "NPC",
-      "wip": true,
-      "sections": []
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Zechariah joins the roster as a full entity in v2.0, with his own spawn egg and his own suit in the Arts Suit Shop (he gets a dedicated shop page).\n\nShipping in v2.0 — Lineage / Server Ready."
+        }
+      ]
     },
     {
       "id": "cecil",
@@ -741,10 +751,27 @@ window.WIKI_DATA = {
     {
       "id": "guis",
       "cat": "systems",
-      "name": "GUIS",
+      "name": "GUIs",
       "type": "System",
       "wip": false,
-      "sections": []
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Every menu in the mod. v2.0 rebuilt most of them and threw out the old inventory-tab buttons entirely.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "Reworked in v2.0",
+          "body": "• Origin Sheet — rebuilt (OriginSheetGUI2)\n• Race Passive GUI — now its own screen\n• Power Passive GUI — now its own screen\n• Ability rows — slots are reorderable, all 5 of them, with a swap message behind it"
+        },
+        {
+          "heading": "New in v2.0",
+          "body": "• Customization Menu\n• Daily Mission tab\n• Flight Style menu\n• Battle Pass screen\n• Item Shop screen\n• Group screen\n• Blood Settings screen\n• Third-person and first-person animation editors"
+        },
+        {
+          "heading": "Removed",
+          "body": "The old inventory-tab button system and its client events, the ShowAbilities overlay, and the old Viltrumite passives button message — all replaced by the menus above."
+        }
+      ]
     },
     {
       "id": "drip-system",
@@ -752,7 +779,24 @@ window.WIKI_DATA = {
       "name": "Drip System",
       "type": "System",
       "wip": false,
-      "sections": []
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Everything cosmetic — suits, capes and the comics — lives under the drip system, sold through Art's Suit Shop and earned through the Battle Pass.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "Invincible variants",
+          "body": "• Bulletproofible\n• Capvincible\n• Capevincible (Sinister-Mark)\n• Gogglesvincible\n• Hoodvincible (Sheisty-Mark)\n• Lightbluecible\n• Maskvincible\n• Mohawkvincible\n• Movincihawk\n• Omnivincible\n• Omni-Mark\n• Sinister-Mark\n• Sportsvincible\n• Sportsvincible (Comic)\n• Stripevincible\n• Flaxancible\n• Viltrumite Prisoner (Prisonincible)"
+        },
+        {
+          "heading": "Character suits",
+          "body": "• Kid Omni-Man (+ V2)\n• Rex Splode\n• War Woman\n• Immortal\n• Cecil's Suit\n• GDA Combat Suit (+ Special)\n• Flaxan Armor\n• Bulletproof\n• Omni-Man (Cobalt)\n• Viltrumite (Onyx)\n• Viltrumite Council\n• Zechariah"
+        },
+        {
+          "heading": "Capes",
+          "body": "• Omni-Mark\n• Sinister-Mark\n• War Woman"
+        }
+      ]
     },
     {
       "id": "power-acquisition-system-for-existing-powers",
@@ -768,7 +812,20 @@ window.WIKI_DATA = {
       "name": "Group / Org System",
       "type": "System",
       "wip": false,
-      "sections": []
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Parties, rebuilt from scratch. The old procedure-based group commands are gone — v2.0 runs a proper group engine with saved group data, a real UI and group chat.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "What you get",
+          "body": "• A group screen and GUI for creating, joining and managing a group\n• Saved group data with a manager behind it\n• Custom Group Banners — a banner menu plus flat-banner rendering\n• Group chat with name filtering\n• Group events and a full command set"
+        },
+        {
+          "heading": "Replaces",
+          "body": "The old create / join / kick / invite / disband procedures were removed entirely. Anything you had bound to them needs the new commands."
+        }
+      ]
     },
     {
       "id": "built-in-shader-impact-frame-system",
@@ -783,8 +840,17 @@ window.WIKI_DATA = {
       "cat": "systems",
       "name": "Art's Suit Shop",
       "type": "System",
-      "wip": true,
-      "sections": []
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "A full multi-page suit shop — browse by category, flip through pages, and buy with InvinciCoins. Art's Suit Shop is the front end for the whole drip system.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "Shop pages",
+          "body": "• Main Page\n• Guardians of the Globe\n• Teen Team\n• Unaffiliated\n• GDA\n• Immortal\n• Darkwing\n• Kid Omni\n• Omni-Man\n• Zechariah\n• Invincible Suits (pages 1–2)\n\nEach page has paged navigation and a cash label, and the Suit Model entity is used to display the suit itself."
+        }
+      ]
     },
     {
       "id": "karma-rep-system",
@@ -828,6 +894,10 @@ window.WIKI_DATA = {
       "type": "System",
       "wip": false,
       "sections": [
+        {
+          "heading": "Now shipping",
+          "body": "The Vendetta system goes from concept to code in v2.0. What ships: Vendetta combat, vendetta data and config, the death-roll, dialogue, events, spawn hooks, stat application and auto-stamp — plus admin and debug commands and a Vendetta Debugger item for testing it.\n\nThe design notes below are the target the system is built against.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
         {
           "heading": "Vendetta AI Engine — System Concept",
           "body": "The Vendetta AI Engine would allow certain NPCs to remember your actions, develop generational hatred and return to exact revenge on players and those associated with them."
@@ -1598,6 +1668,239 @@ window.WIKI_DATA = {
         {
           "heading": "Linegae Update Through MCA Support!",
           "body": "Adds long-term progression through family and inheritance systems.\n\n• New Powers (3–5):\n• TBD\n• TBD\n• TBD\n• TBD\n• TBD\n\n• Systems:\n• Reproduction System\n• Hybrid System\n\n• Gameplay:\n• Generational Progression"
+        }
+      ]
+    },
+    {
+      "id": "energy-absorption",
+      "cat": "powers",
+      "name": "Energy Absorption",
+      "type": "Power",
+      "wip": true,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Powerplex's power. You take energy in and give it back with interest — soaking up damage and incoming energy, then discharging it as arcs, beams and shockwaves.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "Abilities",
+          "body": "• Arch Lightning — chained lightning that jumps between targets\n• Arch Shot — a fired bolt of stored energy (new projectile)\n• Lightning Strike — call a strike down onto a target\n• Powerline — a sustained line of current\n• Powerplex — the signature discharge, with its own Powerplex Victim effect\n• Pulsating Wave — an expanding wave of released energy\n\nUnlock levels are being tuned — they'll be listed here once v2.0 is out."
+        },
+        {
+          "heading": "Sounds & FX",
+          "body": "Ships with a new sound set built for the power:\n• Charge — spooling energy up\n• Absorb — taking energy in\n• Wave — the release"
+        }
+      ]
+    },
+    {
+      "id": "molecular-acceleration",
+      "cat": "powers",
+      "name": "Molecular Acceleration",
+      "type": "Power",
+      "wip": true,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Rex Splode's power. You accelerate the molecules in whatever you touch until it detonates — fists, the ground, or something you throw.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "Abilities",
+          "body": "• Charged Fist — charge a punch until it blows on contact\n• Ground Boost — detonate beneath you for launch\n• Ground Charge — charge the ground into a delayed blast\n• Scatter Mines — scatter charged mines around you (new projectile)\n• Single Acceleration — charge one object and throw it (new projectile)\n• Triple Scatter — a three-way scatter throw\n\nUnlock levels are being tuned — they'll be listed here once v2.0 is out."
+        },
+        {
+          "heading": "Sounds & FX",
+          "body": "New sound set:\n• Activate\n• Charge\n• Explosion\n• Throw"
+        }
+      ]
+    },
+    {
+      "id": "suit-model",
+      "cat": "npcs",
+      "name": "Suit Model",
+      "type": "Entity",
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "The shop mannequin. A display entity used to show a suit off in Art's Suit Shop rather than a mob you fight.\n\nShipping in v2.0 — Lineage / Server Ready."
+        }
+      ]
+    },
+    {
+      "id": "battle-pass",
+      "cat": "systems",
+      "name": "Battle Pass",
+      "type": "System",
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "A 50-tier Battle Pass with its own screen, progress tracking and full server sync. Play, earn tiers, claim rewards — one at a time or all at once.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "What's in it",
+          "body": "• 50 tiers with configurable reward sets\n• Claim and claim-all flows\n• Purchase flow for the premium track\n• Progress tracking synced between client and server\n• A dedicated Battle Pass screen plus commands for admins\n• A Daily Mission tab in the new menus feeds progress"
+        },
+        {
+          "heading": "Suit exclusives",
+          "body": "Season-exclusive suits are protected by a Suit Exclusives registry and enforcer, so a suit tied to a past season stays tied to it. Admins get commands to manage the list."
+        }
+      ]
+    },
+    {
+      "id": "invincicoins",
+      "cat": "systems",
+      "name": "InvinciCoins & the Item Shop",
+      "type": "System",
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "InvinciCoins are the mod's in-game currency — a real item, with commands for granting and checking balances. They're what the Item Shop and the suit shop run on.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "Item Shop",
+          "body": "• Buy, edit and open flows\n• A shop manager for stock and pricing\n• Its own screen and commands\n• A cash label shown on the suit shop pages\n• XP Multiplier potions are among the things you can pick up"
+        }
+      ]
+    },
+    {
+      "id": "factions",
+      "cat": "systems",
+      "name": "Factions",
+      "type": "System",
+      "wip": true,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Factions sit a level above groups — a persistent allegiance with its own data and command set. This is the backbone of the server's G.D.A. / Viltrum Empire / Coalition split.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "What's in v2.0",
+          "body": "• FactionManager and FactionData — the storage and runtime side\n• Faction commands for creating and administering factions\n\nFaction gameplay (war, territory, rewards) lands with the server."
+        }
+      ]
+    },
+    {
+      "id": "flight-overhaul",
+      "cat": "systems",
+      "name": "Flight Overhaul & Flight FX",
+      "type": "System",
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Flight was rebuilt to look cinematic instead of functional. Take off, break the sky, come back down and leave a crater.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "The FX package",
+          "body": "• Reentry glow\n• Charge glow — block and entity layers\n• Landing shockwave\n• Ground disturbance\n• Flight heat / burn\n• Camera shake\n• Dynamic FOV\n• A silhouette manager for the distance read"
+        },
+        {
+          "heading": "Under the hood",
+          "body": "New mixins handle flight camera centering, elytra and armor flight fixes, and cancel the old fly-into-wall damage. A Flight Style menu lets you pick how you fly, and the animation engine's flight-pose driver handles the body."
+        }
+      ]
+    },
+    {
+      "id": "animation-engine",
+      "cat": "systems",
+      "name": "Custom Animation Engine",
+      "type": "System",
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Two full keyframe animation frameworks written for the mod — third-person (`tpanim`) and first-person (`fpanim`) — each with an in-game editor.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "What it does",
+          "body": "• Keyframe playback for both camera perspectives\n• An in-game editor screen for each framework\n• Pose, lean and noise drivers so animation reacts to what you're doing\n• A flight-pose driver tied into the flight overhaul\n• Networking so other players see the same animation\n• Blockbench export\n• A dev animator tool, plus a stack of rendering mixins that drive player animation"
+        }
+      ]
+    },
+    {
+      "id": "lock-on-system",
+      "cat": "systems",
+      "name": "Lock-On System",
+      "type": "System",
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Target lock-on for combat — hold a target and your abilities and camera follow it instead of your crosshair.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "How it works",
+          "body": "• Bound to a new \"Lock On\" keybind\n• Runs through LockOnSystem with its own network message so the server agrees\n• Two gamerules control it separately: `invincibleLockOn` for ground combat and `invincibleFlyingLockOn` for flight"
+        }
+      ]
+    },
+    {
+      "id": "blood-fx",
+      "cat": "systems",
+      "name": "Blood FX",
+      "type": "System",
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Hits leave a mess. Blood FX adds blood to the world and to your screen, with a settings screen so you can turn it down or off entirely.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "What's included",
+          "body": "• BloodFx plus world FX\n• A HUD renderer for on-screen blood\n• Blood triggers wired into combat\n• A Blood Settings screen — toggle and intensity"
+        }
+      ]
+    },
+    {
+      "id": "gamerules",
+      "cat": "systems",
+      "name": "Gamerules",
+      "type": "Reference",
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Server-side switches for the mod's systems. Set them like any vanilla gamerule.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "v2.0 gamerules",
+          "body": "• `invincibleEvents` — turn mod events on or off\n• `invincibleLockOn` — ground lock-on\n• `invincibleFlyingLockOn` — lock-on while flying\n• `aliasInChat` — show aliases / nicknames in chat\n• `showMobStatsOnSpawn` — print mob stats when they spawn"
+        }
+      ]
+    },
+    {
+      "id": "admin-tools",
+      "cat": "systems",
+      "name": "Admin & Chat Tools",
+      "type": "System",
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "The admin side of v2.0 — the tools for running a server and testing balance.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "What's in it",
+          "body": "• Alias chat — nicknames in chat, gated behind the `aliasInChat` gamerule\n• Admin add / XP commands\n• A Tech Jacket command\n• A combat admin command\n• A Test Dummy system for damage testing\n• Battle Pass, Item Shop, InvinciCoin, group, faction, vendetta and suit-exclusive commands each ship with their own system"
+        }
+      ]
+    },
+    {
+      "id": "comics",
+      "cat": "items",
+      "name": "Invincible Incorporated Comics",
+      "type": "Item",
+      "wip": false,
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "Collectible in-game comic issues, sold as cosmetics through the shop.\n\nShipping in v2.0 — Lineage / Server Ready."
+        },
+        {
+          "heading": "Issues",
+          "body": "• Issue #1\n• Issue #2\n• Issue #2 — variant cover\n• Issue #3"
         }
       ]
     }

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Changelogs — Invincible Incorporated</title>
+  <meta name="description" content="Every Invincible Incorporated update, fix and new power — including the v2.0 Lineage / Server Ready release.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,19 +13,41 @@
 </head>
 <body data-page="changelogs">
   <div id="site-header"></div>
-  <main class="page">
-    <div class="page-eyebrow">THE PAST</div>
-    <h1>THE <span class="accent">CHANGELOGS</span></h1>
-    <p class="lede">Every update, fix and new power. Newest at the top.</p>
-    <div class="log" id="log"></div>
+
+  <main class="log-page">
+    <div class="log-head">
+      <div>
+        <div class="page-eyebrow">THE PAST</div>
+        <h1>THE <span class="accent">CHANGELOGS</span></h1>
+        <p class="log-lede">Every update, fix and new power. Newest at the top — <strong>v2.0 Lineage</strong> is next out of the gate.</p>
+      </div>
+      <div class="log-stats" id="logStats"></div>
+    </div>
+
+    <div class="log-toolbar">
+      <span class="tlabel">Show</span>
+      <button class="chip is-active" data-filter="all" type="button">Everything</button>
+      <button class="chip chip--add" data-filter="add" type="button">Added</button>
+      <button class="chip chip--chg" data-filter="chg" type="button">Changed</button>
+      <button class="chip chip--rem" data-filter="rem" type="button">Removed</button>
+    </div>
+
+    <div class="log-layout">
+      <nav class="log-rail" id="logRail" aria-label="Jump to version"></nav>
+      <div class="log-list" id="log"></div>
+    </div>
   </main>
+
   <div id="site-footer"></div>
   <script src="/site.js"></script>
 
   <script>
   /* ============================================================
      CHANGELOG DATA — newest first.
-     Each entry: { ver, title, desc?, items?, groups? }
+     Each entry: { ver, title, desc?, status?, items?, groups? }
+       status: "soon"  -> COMING SOON badge (not released yet)
+               "latest"-> LATEST badge (current downloadable build)
+               omitted -> a normal past release
        items:  [ ["add"|"chg"|"rem", "text"], ... ]
        groups: [ { name:"Sub-heading", items:[ ... ] }, ... ]
      Tags: add = ADDED (green), chg = CHANGED (yellow), rem = REMOVED (red)
@@ -32,8 +55,92 @@
      ============================================================ */
   const CHANGELOG = [
     {
+      ver: "v2.0",
+      title: "Lineage / Server Ready — the biggest update yet",
+      status: "soon",
+      desc: "Two new powers, a full economy, the Vendetta system, rebuilt groups and factions, a cinematic flight overhaul and a custom animation engine. This is the build the server runs on.",
+      groups: [
+        { name: "Infrastructure", items: [
+          ["chg", "Darkness Core is now a hard dependency — the engine mod ships alongside Invincible Inc and is required to launch."],
+          ["add", "JEI integration — blueprints, genetics items and recipes now show up in JEI with their own info pages."],
+          ["chg", "NeoForge requirement bumped to `21.1.216+`."],
+          ["add", "New gamerules: `invincibleEvents`, `invincibleLockOn`, `invincibleFlyingLockOn`, `aliasInChat`, `showMobStatsOnSpawn`."]
+        ]},
+        { name: "New powers", items: [
+          ["add", "Energy Absorption (Powerplex's power) — Arch Lightning, Arch Shot, Lightning Strike, Powerline, Powerplex and Pulsating Wave, with a new charge / absorb / wave sound set."],
+          ["add", "Molecular Acceleration (Rex Splode's power) — Charged Fist, Ground Boost, Ground Charge, Scatter Mines, Single Acceleration and Triple Scatter, with new activate / charge / explosion / throw sounds."]
+        ]},
+        { name: "New abilities & effects", items: [
+          ["add", "Abilities: Arch Lightning, Lightning Strike, Powerline, Powerplex (+ Powerplex Victim), Charged Fist, Ground Boost, Ground Charge, Scatter Mines, Single Acceleration, Triple Scatter."],
+          ["add", "Effects: Certain Impact Frame, Mastery CD, No Combat, XP Multiplier."],
+          ["add", "New projectiles — Arch Shot, Scatter Mine, Single Acceleration."],
+          ["add", "New impact sounds: 5 light-punch and 3 heavy-punch variants."]
+        ]},
+        { name: "New entities", items: [
+          ["add", "Male Viltrumite, Female Viltrumite, Zechariah, and the Suit Model (the shop mannequin)."],
+          ["add", "New spawn eggs for Zechariah and the Unnamed Viltrumite."],
+          ["chg", "The old plural `unnamed_viltrumites` entity is now the singular Unnamed Viltrumite."]
+        ]},
+        { name: "Battle Pass & economy (all new)", items: [
+          ["add", "50-tier Battle Pass — claim and claim-all, purchase, reward sets, progress tracking, full sync networking, a dedicated screen and its own commands."],
+          ["add", "InvinciCoins — the mod's currency, as an item plus commands."],
+          ["add", "Item Shop — buy / edit / open flows, a manager, a screen and commands."],
+          ["add", "Suit Exclusives — a registry, an enforcer and commands that protect season-exclusive suits."],
+          ["add", "XP Multiplier potions."]
+        ]},
+        { name: "Suit shop & cosmetics", items: [
+          ["add", "A full multi-page Arts Suit Shop with category tabs: Main Page, Guardians of the Globe, Teen Team, Unaffiliated, GDA, Immortal, Darkwing, Kid Omni, Omni-Man, Zechariah and Invincible Suits (pages 1–2), plus a cash label and paged navigation."],
+          ["add", "Invincible variants: Bulletproofible, Capvincible, Capevincible (Sinister-Mark), Gogglesvincible, Hoodvincible (Sheisty-Mark), Lightbluecible, Maskvincible, Mohawkvincible, Movincihawk, Omnivincible, Omni-Mark, Sinister-Mark, Sportsvincible, Sportsvincible (Comic), Stripevincible, Flaxancible and Viltrumite Prisoner (Prisonincible)."],
+          ["add", "Character suits: Kid Omni-Man (+ V2), Rex Splode, War Woman, Immortal, Cecil's Suit, GDA Combat Suit (+ Special), Flaxan Armor, Bulletproof, Omni-Man (Cobalt), Viltrumite (Onyx), Viltrumite Council and Zechariah."],
+          ["add", "Capes: Omni-Mark, Sinister-Mark and War Woman."],
+          ["add", "Comics: Invincible Incorporated Issues #1, #2 (+ variant cover) and #3."]
+        ]},
+        { name: "Groups, parties & factions", items: [
+          ["add", "A new `group` engine — GroupManager + GroupData, GroupGui / GroupScreen, custom Group Banners (banner menu and flat-banner rendering), group chat with name filtering, group events and commands."],
+          ["add", "Factions — FactionManager, FactionData and faction commands."],
+          ["rem", "The old procedure-based group system (create / join / kick / invite / disband) — fully replaced by the new group engine."]
+        ]},
+        { name: "Vendetta system (new)", items: [
+          ["add", "A full grudge / revenge system: Vendetta combat, data, config, death-roll, dialogue, events, spawn hooks, stat application and auto-stamp."],
+          ["add", "Admin and debug commands, plus a Vendetta Debugger item."]
+        ]},
+        { name: "Flight overhaul + flight FX", items: [
+          ["add", "A cinematic flight package — reentry glow, charge glow (block and entity layers), landing shockwave, ground disturbance, flight heat / burn, camera shake, dynamic FOV and a silhouette manager."],
+          ["add", "A Flight Style menu."],
+          ["chg", "New mixins for flight camera centering, elytra / armor flight fixes, and cancelling fly-into-wall damage."]
+        ]},
+        { name: "Custom animation engine (new)", items: [
+          ["add", "Two full keyframe animation frameworks — third-person (`tpanim`) and first-person (`fpanim`) — each with an in-game editor screen, playback, pose / lean / noise drivers, networking and Blockbench export."],
+          ["add", "A flight-pose driver and a dev animator tool."],
+          ["chg", "Many new rendering mixins to drive player animation."]
+        ]},
+        { name: "Blood FX & lock-on", items: [
+          ["add", "Blood FX — BloodFx plus world FX, a HUD renderer, blood triggers and a Blood Settings screen (toggle and intensity)."],
+          ["add", "Lock-on — target lock-on (LockOnSystem + network message) with a \"Lock On\" keybind and dedicated ground and flying lock-on gamerules."]
+        ]},
+        { name: "UI reworks", items: [
+          ["chg", "Origin Sheet reworked (new OriginSheetGUI2)."],
+          ["chg", "Race Passive GUI and Power Passive GUI rebuilt as dedicated screens."],
+          ["add", "New Customization Menu, Daily Mission tab and Flight Style menu."],
+          ["add", "Ability row swapping — reorderable ability slots across all 5 slots, with a new swap message and procedure."],
+          ["rem", "The old inventory-tab button system, its client events, the ShowAbilities overlay and the old Viltrumite passives button message — replaced by the new menus."]
+        ]},
+        { name: "Admin & chat tools (new)", items: [
+          ["add", "Alias chat — nicknames in chat, toggled with the `aliasInChat` gamerule."],
+          ["add", "Admin add / XP commands, a Tech Jacket command and a combat admin command."],
+          ["add", "A Test Dummy system for damage testing."]
+        ]},
+        { name: "Balance & reworks", items: [
+          ["chg", "Combat reworked across the Standard and Viltrumite fighting styles."],
+          ["chg", "NPC spawning, race stat multipliers, power stat multipliers, passive unlocking and the ability-call path (now a new call path) all revised."],
+          ["chg", "The origin sheet and every race item — Human, Viltrumite, Beast, Demon, Unopan, Unopan Modified and both hybrids — revised."]
+        ]}
+      ]
+    },
+    {
       ver: "v1.4.5",
       title: "The big content drop — NPCs, races, suits, powers & the genetics pipeline",
+      status: "latest",
       groups: [
         { name: "New NPCs / entities", items: [
           ["add", "Conquest, General Kregg, Damian Darkblood, Lucan, Thula, Anissa, Monster Girl, Darkwing, unnamed Viltrumites, and the Spirit Dragon — plus new projectiles (Hell Fire Arrow, Dragon's Breath, Bat Attack)."]
@@ -133,41 +240,119 @@
 
   (function(){
     function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-    function fmt(s){ // escape, then style `code` spans
-      return esc(s).replace(/`([^`]+)`/g, '<code style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.86em;background:#0B0E15;border:1px solid #2a2f3a;border-radius:3px;padding:1px 5px;color:#cdd2da;">$1</code>');
+    function fmt(s){ return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>"); }
+    function slug(v){ return String(v).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""); }
+
+    var TAG = { add:"ADDED", chg:"CHANGED", rem:"REMOVED" };
+
+    function allItems(e){
+      var out = (e.items || []).slice();
+      (e.groups || []).forEach(function(g){ out = out.concat(g.items || []); });
+      return out;
     }
-    var TAG = {
-      add: { label:"ADDED",   bg:"rgba(158,255,42,.14)", color:"#9eff2a", bd:"rgba(158,255,42,.45)" },
-      chg: { label:"CHANGED", bg:"rgba(255,210,61,.14)", color:"#FFD23D", bd:"rgba(255,210,61,.45)" },
-      rem: { label:"REMOVED", bg:"rgba(225,21,21,.16)",  color:"#ff8a8a", bd:"rgba(225,21,21,.5)" }
-    };
-    function tagChip(t){
-      var c = TAG[t] || TAG.chg;
-      return '<span style="display:inline-block;font-family:\'Barlow\',sans-serif;font-weight:800;font-size:10px;letter-spacing:.5px;padding:2px 7px;border-radius:3px;margin-right:9px;background:'+c.bg+';color:'+c.color+';border:1px solid '+c.bd+';white-space:nowrap;vertical-align:1.5px;">'+c.label+'</span>';
+    function counts(list){
+      var c = { add:0, chg:0, rem:0 };
+      list.forEach(function(it){ if (c[it[0]] != null) c[it[0]]++; });
+      return c;
     }
     function itemLi(it){
-      return '<li style="margin:7px 0;color:#c2c7d0;font-size:15px;line-height:1.6;list-style:none;">'+tagChip(it[0])+'<span>'+fmt(it[1])+'</span></li>';
+      var t = TAG[it[0]] ? it[0] : "chg";
+      return '<li class="log-item" data-kind="'+t+'">'+
+        '<span class="log-tag log-tag--'+t+'">'+TAG[t]+'</span>'+
+        '<span>'+fmt(it[1])+'</span></li>';
     }
-    function groupHeader(name){
-      return '<div style="font-family:\'Barlow\',sans-serif;font-weight:800;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#2E6BFF;margin:18px 0 6px;">'+esc(name)+'</div>';
+    function countChips(c){
+      var out = "";
+      if (c.add) out += '<span class="log-count log-count--add">'+c.add+' added</span>';
+      if (c.chg) out += '<span class="log-count log-count--chg">'+c.chg+' changed</span>';
+      if (c.rem) out += '<span class="log-count log-count--rem">'+c.rem+' removed</span>';
+      return out ? '<div class="log-counts">'+out+'</div>' : "";
     }
 
+    /* ---------- entries ---------- */
     var html = CHANGELOG.map(function(e){
-      var inner = '<div class="ver">'+esc(e.ver)+'</div>';
-      if (e.title) inner += '<div style="font-family:\'Anton\',sans-serif;font-style:italic;font-size:20px;color:#fff;margin:2px 0 10px;line-height:1.1;">'+esc(e.title)+'</div>';
-      if (e.desc)  inner += '<p style="color:#9aa0ab;font-size:15px;line-height:1.6;margin:0 0 4px;">'+fmt(e.desc)+'</p>';
-      if (e.items && e.items.length){
-        inner += '<ul style="margin:6px 0 0;padding:0;">'+e.items.map(itemLi).join("")+'</ul>';
-      }
-      if (e.groups && e.groups.length){
-        inner += e.groups.map(function(g){
-          return groupHeader(g.name)+'<ul style="margin:0;padding:0;">'+g.items.map(itemLi).join("")+'</ul>';
-        }).join("");
-      }
-      return '<div class="log-entry">'+inner+'</div>';
-    }).join("");
+      var id = "v" + slug(e.ver).replace(/^v/,"");
+      var c  = counts(allItems(e));
+      var badge = e.status === "soon"   ? '<span class="log-badge log-badge--soon">Coming soon</span>'
+                : e.status === "latest" ? '<span class="log-badge log-badge--latest">Latest release</span>' : "";
 
+      var inner = '<div class="log-card-top">'+
+        '<span class="log-ver">'+esc(e.ver)+'</span>'+ badge +
+        '<a class="log-anchor" href="#'+id+'" aria-label="Link to '+esc(e.ver)+'">#</a></div>';
+      if (e.title) inner += '<div class="log-title">'+esc(e.title)+'</div>';
+      if (e.desc)  inner += '<p class="log-desc">'+fmt(e.desc)+'</p>';
+      inner += countChips(c);
+      if (e.items && e.items.length){
+        inner += '<ul class="log-items">'+e.items.map(itemLi).join("")+'</ul>';
+      }
+      (e.groups || []).forEach(function(g){
+        inner += '<div class="log-group"><div class="log-group-name">'+esc(g.name)+'</div>'+
+          '<ul class="log-items">'+(g.items||[]).map(itemLi).join("")+'</ul></div>';
+      });
+      return '<article class="log-card'+(e.status === "soon" ? " log-card--soon" : "")+'" id="'+id+'">'+inner+'</article>';
+    }).join("");
     document.getElementById("log").innerHTML = html;
+
+    /* ---------- version rail ---------- */
+    document.getElementById("logRail").innerHTML =
+      '<div class="rlabel">Versions</div>' +
+      CHANGELOG.map(function(e){
+        var id = "v" + slug(e.ver).replace(/^v/,"");
+        var cls = e.status === "soon" ? " has-soon" : (e.status === "latest" ? " has-latest" : "");
+        return '<a href="#'+id+'" data-rail="'+id+'" class="'+cls.trim()+'">'+esc(e.ver)+'<span class="rdot"></span></a>';
+      }).join("");
+
+    /* ---------- headline stats ---------- */
+    var totals = counts(CHANGELOG.reduce(function(a,e){ return a.concat(allItems(e)); }, []));
+    document.getElementById("logStats").innerHTML =
+      '<div class="log-stat"><div class="n">'+CHANGELOG.length+'</div><div class="l">Releases</div></div>'+
+      '<div class="log-stat log-stat--add"><div class="n">'+totals.add+'</div><div class="l">Added</div></div>'+
+      '<div class="log-stat log-stat--chg"><div class="n">'+totals.chg+'</div><div class="l">Changed</div></div>'+
+      '<div class="log-stat log-stat--rem"><div class="n">'+totals.rem+'</div><div class="l">Removed</div></div>';
+
+    /* ---------- filters ---------- */
+    var chips = Array.prototype.slice.call(document.querySelectorAll(".chip[data-filter]"));
+    chips.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var f = btn.getAttribute("data-filter");
+        chips.forEach(function(b){ b.classList.toggle("is-active", b === btn); });
+        document.querySelectorAll(".log-item").forEach(function(li){
+          li.hidden = !(f === "all" || li.getAttribute("data-kind") === f);
+        });
+        // hide any card / group that has nothing left to show
+        document.querySelectorAll(".log-group").forEach(function(g){
+          g.hidden = !g.querySelector(".log-item:not([hidden])");
+        });
+        document.querySelectorAll(".log-card").forEach(function(card){
+          var hasItems = !!card.querySelector(".log-item:not([hidden])");
+          card.hidden = (f !== "all") && !hasItems;
+        });
+        var visible = document.querySelector(".log-card:not([hidden])");
+        var list = document.getElementById("log");
+        var empty = document.getElementById("logEmpty");
+        if (!visible && !empty){
+          list.insertAdjacentHTML("beforeend",
+            '<div class="log-empty" id="logEmpty">Nothing matches that filter.</div>');
+        } else if (visible && empty){
+          empty.remove();
+        }
+      });
+    });
+
+    /* ---------- rail highlight on scroll ---------- */
+    var cards = Array.prototype.slice.call(document.querySelectorAll(".log-card"));
+    function syncRail(){
+      var visible = cards.filter(function(c){ return !c.hidden; });
+      var best = visible[0] || null;
+      visible.forEach(function(card){
+        if (card.getBoundingClientRect().top <= 140) best = card;
+      });
+      document.querySelectorAll("[data-rail]").forEach(function(a){
+        a.classList.toggle("is-current", !!best && a.getAttribute("data-rail") === best.id);
+      });
+    }
+    window.addEventListener("scroll", syncRail, { passive:true });
+    syncRail();
   })();
   </script>
 </body>
