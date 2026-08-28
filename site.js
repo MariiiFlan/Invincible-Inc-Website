@@ -38,10 +38,10 @@ const LINKS = {
 const BANNER = {
   on:    true,
   id:    "v2-lineage",
-  tag:   "COMING SOON",
-  text:  "v2.0 — Lineage / Server Ready: two new powers, the Battle Pass, Vendettas, Factions and the flight overhaul.",
-  cta:   "READ THE CHANGELOG",
-  href:  "/changelogs#v2-0",
+  tag:   "OUT NOW",
+  text:  "v2.0 is live and the server is online — invincibleinc.mcserver.us. Grab the modpack and jump in.",
+  cta:   "JOIN THE SERVER",
+  href:  "/server",
 };
 
 /* Social icon paths (24×24 viewBox). */

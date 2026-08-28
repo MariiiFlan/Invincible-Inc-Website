@@ -4,56 +4,146 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Server — Invincible Incorporated</title>
-  <meta name="description" content="The Invincible Incorporated Minecraft server — factions, PVP, seasons, ranks and a living hero economy. Coming soon for 1.21.1.">
+  <meta name="description" content="Join the Invincible Incorporated Minecraft server — invincibleinc.mcserver.us. Powers, PVP, factions, seasons and ranks on the latest 1.21.1 build. Grab the modpack and connect.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600;1,700;1,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+  <style>
+    /* self-contained styles so the page doesn't depend on anything new in styles.css */
+    .newmod{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:space-between;
+            background:linear-gradient(90deg,rgba(46,107,255,.15),rgba(158,255,42,.12));
+            border:2px solid #9eff2a;border-left:6px solid #9eff2a;padding:16px 20px;margin:8px 0 30px}
+    .newmod .nm-txt{max-width:640px}
+    .newmod .nm-tag{font-family:'Bangers',cursive;letter-spacing:2px;color:#9eff2a;font-size:14px}
+    .newmod .nm-h{font-family:'Anton',sans-serif;font-style:italic;font-size:24px;line-height:1;margin:2px 0 4px;color:#fff}
+    .newmod .nm-d{font-family:'Barlow',sans-serif;font-size:13.5px;color:#c8ccd4;margin:0}
+    .newmod .nm-btn{white-space:nowrap}
+    .ipbox{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+           background:#0d0f14;border:3px solid #fff;box-shadow:7px 7px 0 rgba(0,0,0,.55);
+           padding:18px 22px;margin:6px 0 10px;max-width:620px}
+    .ipbox .ip-lab{font-family:'Barlow',sans-serif;font-weight:800;font-size:11px;letter-spacing:1.5px;color:#5b6270}
+    .ipbox .ip-val{font-family:'Anton',sans-serif;font-style:italic;font-size:30px;color:#9eff2a;line-height:1;
+                   word-break:break-all;flex:1;min-width:200px}
+    .ipbox .ip-copy{cursor:pointer;background:#FFD23D;border:3px solid #fff;color:#111;
+                    font-family:'Anton',sans-serif;font-style:italic;font-size:15px;padding:9px 18px;transition:all .12s}
+    .ipbox .ip-copy:hover{background:#9eff2a}
+    .ipnote{font-family:'Barlow',sans-serif;font-size:13px;color:#8a90a0;margin:0 0 4px}
+    .ipnote b{color:#c8ccd4}
+    .joinsteps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 6px;max-width:900px}
+    .js-card{background:#0d0f14;border:2px solid #1c2029;padding:14px 16px}
+    .js-n{font-family:'Anton',sans-serif;font-style:italic;font-size:13px;color:#FFD23D}
+    .js-t{font-family:'Anton',sans-serif;font-style:italic;font-size:16px;color:#fff;margin:2px 0 4px}
+    .js-d{font-family:'Barlow',sans-serif;font-size:13px;color:#9aa3b2;line-height:1.45;margin:0}
+    @media(max-width:760px){.joinsteps{grid-template-columns:1fr}}
+  </style>
 </head>
 <body data-page="server">
   <div id="site-header"></div>
 
   <main class="page">
-    <div class="page-eyebrow">THE FUN</div>
+    <div class="page-eyebrow">NOW LIVE</div>
     <h1>THE <span class="accent">SERVER</span></h1>
-    <p class="lede">Powers, PVP, factions, seasons, rank and alignment — a living hero economy running on the v2.0 build. Details drop as launch gets closer.</p>
-    <span class="soon">Coming soon</span>
+    <p class="lede">Powers, PVP, factions, seasons, rank and alignment — a living hero economy, online now on the latest 1.21.1 build. Install the modpack, connect, and suit up.</p>
+
+    <!-- new mod announcement -->
+    <div class="newmod">
+      <div class="nm-txt">
+        <div class="nm-tag">JUST DROPPED</div>
+        <div class="nm-h">THE NEW UPDATE IS OUT</div>
+        <p class="nm-d">The latest Invincible Incorporated build is live on CurseForge — new powers, systems and fixes. Update the mod (or grab the modpack) to play the current version on the server.</p>
+      </div>
+      <a class="btn btn--mid nm-btn" href="https://www.curseforge.com/minecraft/mc-mods/invinciblemod" target="_blank" rel="noopener">GET THE MOD</a>
+    </div>
+
+    <!-- server ip -->
+    <div class="ipbox">
+      <div>
+        <div class="ip-lab">JAVA · 1.21.1</div>
+        <div class="ip-val" id="serverIp">invincibleinc.mcserver.us</div>
+      </div>
+      <button class="ip-copy" id="copyIp" type="button">COPY IP</button>
+    </div>
+    <p class="ipnote">This is a <b>modded</b> server — you need the Invincible Incorporated mod (and its dependencies) installed before you can join. The modpack sets it all up for you.</p>
+
+    <!-- how to join -->
+    <div class="joinsteps">
+      <div class="js-card">
+        <div class="js-n">STEP 1</div>
+        <div class="js-t">GET THE MODPACK</div>
+        <p class="js-d">The official modpack has the mod and every dependency pre-installed. One click in the CurseForge app.</p>
+      </div>
+      <div class="js-card">
+        <div class="js-n">STEP 2</div>
+        <div class="js-t">LAUNCH 1.21.1</div>
+        <p class="js-d">Start the modpack once so Minecraft loads with everything in place.</p>
+      </div>
+      <div class="js-card">
+        <div class="js-n">STEP 3</div>
+        <div class="js-t">CONNECT</div>
+        <p class="js-d">Add the server with the IP above and jump in. Copy it, paste it, play.</p>
+      </div>
+    </div>
 
     <div class="whatsnew-grid" style="margin-top:44px;">
       <article class="nw-card" style="--nw:#2E6BFF">
         <div class="nw-ico">🛡️</div>
         <h2 class="nw-name">FACTIONS</h2>
-        <p class="nw-desc">G.D.A., the Viltrum Empire and the Coalition. Pick a side — or start something of your own with the new group engine.</p>
-        <div class="nw-note">v2.0 system</div>
+        <p class="nw-desc">G.D.A., the Viltrum Empire and the Coalition. Pick a side — or start something of your own with the group engine.</p>
+        <div class="nw-note">Live</div>
       </article>
       <article class="nw-card" style="--nw:#E11515">
         <div class="nw-ico">🩸</div>
         <h2 class="nw-name">VENDETTAS</h2>
         <p class="nw-desc">Kills are remembered. Grudges build, NPCs come looking, and the server keeps score.</p>
-        <div class="nw-note">v2.0 system</div>
+        <div class="nw-note">Live</div>
       </article>
       <article class="nw-card" style="--nw:#FFD23D">
         <div class="nw-ico">🎟️</div>
         <h2 class="nw-name">SEASONS</h2>
         <p class="nw-desc">A 50-tier Battle Pass, InvinciCoins and season-exclusive suits that stay exclusive.</p>
-        <div class="nw-note">v2.0 system</div>
+        <div class="nw-note">Live</div>
       </article>
       <article class="nw-card" style="--nw:#9eff2a">
         <div class="nw-ico">★</div>
         <h2 class="nw-name">RANKS</h2>
-        <p class="nw-desc">Five supporter tiers with kits, crate keys and command sets — already live in the shop.</p>
+        <p class="nw-desc">Five supporter tiers with kits, crate keys and command sets — grab yours in the shop.</p>
         <div class="nw-note">Shop</div>
       </article>
     </div>
 
     <div class="hero-actions" style="margin-top:32px;">
-      <a class="btn btn--wide" href="https://discord.gg/R9QC25BS8n" target="_blank" rel="noopener">GET LAUNCH UPDATES</a>
+      <a class="btn btn--wide" href="https://www.curseforge.com/minecraft/modpacks/official-invincible-incorporated-modpack" target="_blank" rel="noopener">GET THE MODPACK</a>
       <a class="btn btn--mid" href="/shop">VISIT THE SHOP</a>
+      <a class="btn btn--mid" href="https://discord.gg/R9QC25BS8n" target="_blank" rel="noopener">JOIN THE DISCORD</a>
     </div>
   </main>
 
   <div id="site-footer"></div>
   <script src="/site.js"></script>
+  <script>
+    (function(){
+      var btn = document.getElementById('copyIp');
+      var ip  = 'invincibleinc.mcserver.us';
+      if (!btn) return;
+      btn.addEventListener('click', function(){
+        var done = function(){
+          var old = btn.textContent;
+          btn.textContent = 'COPIED!';
+          setTimeout(function(){ btn.textContent = old; }, 1400);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(ip).then(done, function(){ fallback(); });
+        } else { fallback(); }
+        function fallback(){
+          var t = document.createElement('textarea');
+          t.value = ip; document.body.appendChild(t); t.select();
+          try { document.execCommand('copy'); done(); } catch(e){}
+          document.body.removeChild(t);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
