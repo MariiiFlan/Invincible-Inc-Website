@@ -100,8 +100,14 @@ input{width:100%;background:#05070c;border:2px solid #243044;color:#fff;font-fam
 
       <div class="side">
         <div class="sideh">ALSO AVAILABLE</div>
+        <a class="orow" href="/shop/invincicoins/index.html">
+          <span class="oname">INVINCICOINS</span><span class="oprice">FROM $4.99</span>
+        </a>
         <a class="orow" href="/shop/shop-ranks/index.html">
           <span class="oname">RANKS</span><span class="oprice">FROM $9.99</span>
+        </a>
+        <a class="orow" href="/shop/crates/index.html">
+          <span class="oname">CRATES</span><span class="oprice">FROM $2.99</span>
         </a>
       </div>
     </div>
@@ -116,8 +122,14 @@ input{width:100%;background:#05070c;border:2px solid #243044;color:#fff;font-fam
 
 var SEASON      = 'SEASON 0';                 // season name
 var IMAGE       = 'battlepass.png';           // image in this same folder
-var PRICE       = '$14.99';                   // displayed price
-var PACKAGE_ID  = 0;                          // Tebex package ID (0 = not live yet)
+var PACKAGE_ID  = 0;                          // Tebex package ID (0 = bought with coins, below)
+
+/* The pass is bought in-game with InvinciCoins, so the buy button sends
+   people to the matching coin pack instead of a Tebex checkout.
+   Set PACKAGE_ID above to a real Tebex ID to sell it directly instead. */
+var COIN_COST   = '1,300';                    // coins the pass costs in-game
+var COIN_LINK   = '/shop/invincicoins/index.html#coins-1300';
+var PRICE       = COIN_COST + ' COINS';       // displayed price
 
 var TAGLINE  = 'THE SEASON STARTS NOW.';
 var LORE     = 'Unlock the full reward track for the season. Level it up as you play and claim every tier.';
@@ -129,7 +141,7 @@ var INCLUDES = [
   'Bonus in-game currency'
 ];
 
-var NOTE = 'The Battle Pass covers the current season only. Rewards must be claimed before the season ends.';
+var NOTE = 'The Battle Pass is bought in-game with InvinciCoins. It covers the current season only — rewards must be claimed before the season ends.';
 
 /* ==========================================================
    Below here is the checkout wiring — no need to touch it
@@ -139,13 +151,33 @@ var TOKEN = 'v7x1-d56f91e2669f8af87a3481d30edc66e27808fe60';
 var API   = 'https://headless.tebex.io/api';
 
 document.title = SEASON + ' Battle Pass — Invincible Inc';
-document.getElementById('bpImg').src = IMAGE;
+var bpImg = document.getElementById('bpImg');
+bpImg.onerror = function(){ this.style.display = 'none'; };
+bpImg.src = IMAGE;
 document.getElementById('bpBadge').textContent = SEASON;
 document.getElementById('bpTagline').textContent = TAGLINE;
 document.getElementById('bpTitle').textContent = SEASON + ' PASS';
 document.getElementById('bpLore').textContent = LORE;
 document.getElementById('bpPrice').textContent = PRICE;
 document.getElementById('bpNote').textContent = NOTE;
+
+/* --- no Tebex package: sell the coins that buy the pass instead --- */
+var COIN_MODE = (!PACKAGE_ID && COIN_LINK);
+if (COIN_MODE) {
+  var box = document.getElementById('buyBtn').parentNode;
+  box.querySelector('.once').textContent = 'BOUGHT WITH INVINCICOINS';
+  box.querySelector('.inst').textContent = 'coins land instantly';
+  box.querySelector('.bigprice').style.fontSize = '34px';
+  box.querySelector('.lbl').style.display = 'none';
+  document.getElementById('mcUser').style.display = 'none';
+  var goBtn = document.getElementById('buyBtn');
+  goBtn.textContent = 'GET ' + COIN_COST + ' INVINCICOINS';
+  goBtn.setAttribute('href', COIN_LINK);
+  var hint = document.createElement('p');
+  hint.style.cssText = 'font-size:12px;color:#8a90a0;line-height:1.5;margin:10px 0 0';
+  hint.textContent = 'Top up your balance, then claim the pass from the Battle Pass screen in-game.';
+  box.insertBefore(hint, box.querySelector('.safe'));
+}
 
 document.getElementById('bpIncludes').innerHTML = INCLUDES.map(function(t){
   var safe = String(t).replace(/[&<>"]/g, function(c){
@@ -160,6 +192,7 @@ try {
 } catch(e){}
 
 document.getElementById('buyBtn').addEventListener('click', function(){
+  if (COIN_MODE) return;   // it's a plain link to the coins page
   var btn   = this;
   var input = document.getElementById('mcUser');
   var err   = document.getElementById('mcErr');

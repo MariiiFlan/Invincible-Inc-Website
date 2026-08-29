@@ -31,9 +31,10 @@ a{text-decoration:none;color:inherit}
 .dots{position:absolute;inset:0;opacity:.15;background-image:radial-gradient(#000 1.3px,transparent 1.6px);background-size:9px 9px;pointer-events:none}
 .fade{position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(transparent,rgba(0,0,0,.88))}
 .meta{position:absolute;left:13px;right:13px;bottom:11px}
-.cname{font-family:'Anton';font-style:italic;font-size:20px;line-height:.95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cname{font-family:'Anton';font-style:italic;font-size:19px;line-height:1;overflow-wrap:break-word}
 .cprice{font-family:'Anton';font-style:italic;font-size:20px;color:#FFD23D}
 .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cprice{flex:none}
 .body{background:#0d0f14;padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:10px}
 .desc{font-size:12.5px;color:#9aa3b2;line-height:1.45;flex:1}
 .btn{display:block;text-align:center;cursor:pointer;background:#FFD23D;border:2px solid #fff;padding:9px;font-family:'Anton';font-style:italic;font-size:14px;color:#111;transition:all .12s}
@@ -82,34 +83,34 @@ input{background:#05070c;border:2px solid #243044;color:#fff;font-family:'Barlow
    ========================================================== */
 
 var CRATES = [
-  { name:'VOTE CRATE',       price:'FREE',  img:'', glyph:'★', color:'#3ddc84', pkg:0,
+  { name:'VOTE CRATE',       price:'FREE',   img:'', glyph:'★', color:'#3ddc84', pkg:0,
     desc:'Earned by voting for the server. No purchase needed.' },
 
-  { name:'ATOMIC CRATE',     price:'$5',    img:'', glyph:'✦', color:'#EC4899', pkg:0,
+  { name:'ATOMIC CRATE',     price:'$2.99',  img:'', glyph:'✦', color:'#EC4899', pkg:7646135,
     desc:'Entry-level loot pool. A solid first crate.' },
 
-  { name:'IMMORTAL CRATE',   price:'$10',   img:'', glyph:'∞', color:'#FFD23D', pkg:0,
+  { name:'IMMORTAL CRATE',   price:'$4.99',  img:'', glyph:'∞', color:'#FFD23D', pkg:7646139,
     desc:'Stronger rolls than Atomic, with better odds on rare drops.' },
 
-  { name:'INVINCIBLE CRATE', price:'$20',   img:'', glyph:'✪', color:'#E11515', pkg:0,
+  { name:'INVINCIBLE CRATE', price:'$9.99',  img:'', glyph:'✪', color:'#E11515', pkg:7646144,
     desc:'High-tier loot pool with a real shot at standout rewards.' },
 
-  { name:'CONQUEST CRATE',   price:'$30',   img:'', glyph:'♛', color:'#8B2FE0', pkg:0,
+  { name:'CONQUEST CRATE',   price:'$14.99', img:'', glyph:'♛', color:'#8B2FE0', pkg:7646146,
     desc:'The top rank crate. The deepest reward pool of the four.' },
 
-  { name:'DRIP CRATE',       price:'$10',   img:'', glyph:'✧', color:'#FF7A2F', pkg:0,
+  { name:'DRIP CRATE',       price:'$3.99',  img:'', glyph:'✧', color:'#FF7A2F', pkg:7646156,
     desc:'Cosmetics only — capes, drip and other looks.' },
 
-  { name:'WEAPONS CRATE',    price:'$10',   img:'', glyph:'⚔', color:'#9aa3b2', pkg:0,
+  { name:'WEAPONS CRATE',    price:'$4.99',  img:'', glyph:'⚔', color:'#9aa3b2', pkg:7646160,
     desc:'Weapons and gear pulled from the mod arsenal.' },
 
-  { name:'BLOODLINE CRATE',  price:'$20',   img:'', glyph:'✹', color:'#B3122B', pkg:0,
+  { name:'BLOODLINE CRATE',  price:'$6.99',  img:'', glyph:'✹', color:'#B3122B', pkg:7646163,
     desc:'Roll for bloodlines and the traits that come with them.' },
 
-  { name:'RACE/POWER CRATE', price:'$25',   img:'', glyph:'⚡', color:'#FF2FD0', pkg:0,
+  { name:'RACE/POWER CRATE', price:'$9.99',  img:'', glyph:'⚡', color:'#FF2FD0', pkg:7646168,
     desc:'Roll for races and powers from across the mod.' },
 
-  { name:'CUSTOMS CRATE',    price:'$45',   img:'', glyph:'✶', color:'#2E6BFF', pkg:0,
+  { name:'CUSTOM CRATE',     price:'$19.99', img:'', glyph:'✶', color:'#2E6BFF', pkg:7646179,
     desc:'All custom powers and races made for players by Dark. Every custom that gets created is added to this crate.' }
 ];
 

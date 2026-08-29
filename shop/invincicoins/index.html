@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>InvinciCoins — Invincible Inc</title>
+<meta name="description" content="Buy InvinciCoins for the Invincible Incorporated server — the in-game currency for the Battle Pass and the Item Shop.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#000;color:#fff;font-family:'Barlow',sans-serif;min-height:100vh}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:3px solid #9eff2a;outline-offset:2px}
+
+.bar{background:#000;border-bottom:2px solid #1c1c1c;padding:18px 56px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.home{font-family:'Anton';font-style:italic;font-size:13px;color:#8a90a0;display:block;margin-bottom:4px}
+.home:hover{color:#FFD23D}
+.crumb{font-family:'Bangers',cursive;font-size:13px;letter-spacing:3px;color:#FFD23D}
+.h1{font-family:'Anton';font-style:italic;font-size:30px;line-height:.9}
+.secure{font-weight:800;font-size:11px;letter-spacing:1px;color:#8a90a0}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#9eff2a;box-shadow:0 0 8px #9eff2a;margin-right:8px}
+
+.wrap{max-width:1400px;margin:0 auto;padding:30px 56px 72px}
+.back{font-family:'Anton';font-style:italic;font-size:14px;color:#8a90a0}
+.back:hover{color:#FFD23D}
+.kicker{font-family:'Bangers',cursive;font-size:15px;letter-spacing:3px;color:#FFD23D;margin-top:24px}
+.big{font-family:'Anton';font-style:italic;font-size:40px;line-height:.9;margin:2px 0 6px}
+.sub{font-size:14px;color:#9aa3b2;margin:0 0 18px;max-width:70ch;line-height:1.5}
+
+.userbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 22px}
+.lbl{font-weight:800;font-size:11px;letter-spacing:1px;color:#5b6270}
+input{background:#05070c;border:2px solid #243044;color:#fff;font-family:'Barlow';font-weight:700;font-size:14px;padding:9px 12px;outline:none;min-width:220px}
+input:focus{border-color:#FFD23D}
+.msg{font-weight:700;font-size:12px;color:#ff5a5a}
+
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;align-items:start}
+.card{position:relative;display:flex;flex-direction:column;border:3px solid #fff;box-shadow:6px 6px 0 rgba(0,0,0,.6);overflow:hidden;transition:transform .12s;scroll-margin-top:24px}
+.card:hover{transform:translateY(-5px)}
+.card.is-target{border-color:#FFD23D;box-shadow:6px 6px 0 rgba(255,210,61,.45)}
+.art{position:relative;height:190px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.dots{position:absolute;inset:0;opacity:.15;background-image:radial-gradient(#000 1.3px,transparent 1.6px);background-size:9px 9px;pointer-events:none}
+.fade{position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(transparent,rgba(0,0,0,.88))}
+.pile{position:relative;z-index:1;width:100%;height:126px}
+.pile img{position:absolute;image-rendering:pixelated;filter:drop-shadow(0 3px 7px rgba(0,0,0,.5))}
+.badge{position:absolute;top:11px;right:11px;z-index:3;background:#fff;color:#111;font-family:'Anton';font-style:italic;font-size:11px;padding:4px 9px}
+.badge--best{background:#9eff2a}
+.meta{position:absolute;left:13px;right:13px;bottom:11px;z-index:2}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.amount{font-family:'Anton';font-style:italic;font-size:22px;line-height:.95;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.price{font-family:'Anton';font-style:italic;font-size:20px;color:#FFD23D;white-space:nowrap}
+.body{background:#0d0f14;padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:10px}
+.desc{font-size:12.5px;color:#9aa3b2;line-height:1.45;flex:1}
+.btn{display:block;text-align:center;cursor:pointer;background:#FFD23D;border:2px solid #fff;padding:9px;font-family:'Anton';font-style:italic;font-size:14px;color:#111;transition:all .12s}
+.btn:hover{background:#3ddc84}
+.btn[aria-disabled="true"]{opacity:.7;pointer-events:none}
+
+.spend{margin-top:34px;background:#0d0f14;border:3px solid #fff;box-shadow:8px 8px 0 rgba(0,0,0,.6);padding:22px 26px}
+.spend .sk{font-family:'Bangers',cursive;font-size:14px;letter-spacing:2px;color:#FFD23D}
+.spend .st{font-family:'Anton';font-style:italic;font-size:26px;line-height:.9;margin:2px 0 14px}
+.spend ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.spend li{border-left:3px solid #FFD23D;padding:2px 0 2px 12px;font-size:13.5px;color:#c8ccd4;line-height:1.5}
+.spend b{display:block;font-family:'Anton';font-style:italic;font-size:16px;color:#fff;font-weight:400}
+
+@media(max-width:1250px){.grid{grid-template-columns:repeat(3,1fr)}.spend ul{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.bar,.wrap{padding-left:20px;padding-right:20px}.big{font-size:32px}.spend ul{grid-template-columns:1fr}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div>
+    <a class="home" href="/">&lsaquo; INVINCIBLE INCORPORATED</a>
+    <div class="crumb">SHOP &rsaquo; INVINCICOINS</div>
+    <div class="h1">INVINCICOINS</div>
+  </div>
+  <div class="secure"><span class="dot"></span>SECURE CHECKOUT &middot; INSTANT IN-GAME DELIVERY</div>
+</div>
+
+<div class="wrap">
+  <a class="back" href="/shop/index.html">&lsaquo; BACK TO SERVER SHOP</a>
+
+  <div class="kicker">THE SERVER CURRENCY</div>
+  <h1 class="big">INVINCICOINS</h1>
+  <p class="sub">InvinciCoins are the server's currency — spend them on the Battle Pass and the Item Shop. Coins land in your account the moment checkout completes.</p>
+
+  <div class="userbar">
+    <span class="lbl">MINECRAFT USERNAME</span>
+    <input id="mcUser" placeholder="Your username" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <span class="msg" id="mcMsg"></span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <section class="spend">
+    <div class="sk">WHAT THEY'RE FOR</div>
+    <h2 class="st">SPEND THEM ON</h2>
+    <ul>
+      <li><b>The Battle Pass</b>50 tiers of seasonal rewards, unlocked with coins in-game.</li>
+      <li><b>The Item Shop</b>Rotating stock, XP Multiplier potions and more.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+/* ==========================================================
+   EDIT THIS LIST — coin packs, prices and Tebex package IDs.
+   Prices must match the Tebex store exactly.
+   best:true  -> green BEST VALUE flag
+   bonus:'..' -> small white flag (extra value vs the base pack)
+   ========================================================== */
+
+var COINS = [
+  { amount:400, coins:1,   label:'400',    price:'$4.99',  pkg:7646207, color:'#2E6BFF', bonus:'',
+    desc:'A starter handful — enough for a few Item Shop picks.' },
+
+  { amount:1300, coins:2,  label:'1,300',  price:'$12.99', pkg:7646212, color:'#EC4899', bonus:'+25% VALUE',
+    desc:'The Battle Pass pack. Covers a season pass with coins to spare.' },
+
+  { amount:2800, coins:3,  label:'2,800',  price:'$24.99', pkg:7646215, color:'#FF7A2F', bonus:'+40% VALUE',
+    desc:'Mid-tier stack. A season pass plus a healthy Item Shop budget.' },
+
+  { amount:6000, coins:5,  label:'6,000',  price:'$49.99', pkg:7646216, color:'#8B2FE0', bonus:'+50% VALUE',
+    desc:'A serious pile — passes and Item Shop stock for a long while.' },
+
+  { amount:13000, coins:8, label:'13,000', price:'$99.99', pkg:7646219, color:'#E11515', best:true, bonus:'+62% VALUE',
+    desc:'The biggest stack and the best rate per coin on the board.' }
+];
+
+/* ==========================================================
+   Below here is the checkout wiring — no need to touch it
+   ========================================================== */
+
+var TOKEN = 'v7x1-d56f91e2669f8af87a3481d30edc66e27808fe60';
+var API   = 'https://headless.tebex.io/api';
+
+function esc(t){
+  return String(t == null ? '' : t).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+  });
+}
+
+/* Coin piles — the stack grows with the pack size.
+   Each entry is [x offset, y offset, size] in px, measured from the
+   centre of the art box. Hand-placed so every pack reads as a set. */
+var PILES = {
+  1: [[0,0,78]],
+  2: [[-21,7,70],[21,-7,70]],
+  3: [[-29,13,62],[29,13,62],[0,-16,68]],
+  5: [[-45,17,52],[-15,21,52],[15,21,52],[45,17,52],[0,-14,62]],
+  8: [[-52,23,46],[-26,27,46],[0,29,46],[26,27,46],[52,23,46],
+      [-27,-6,50],[0,-9,54],[27,-6,50]]
+};
+
+function pile(n){
+  var spec = PILES[n] || PILES[1];
+  return '<div class="pile">' + spec.map(function(c){
+    return '<img src="invincicoin.png" alt="" width="' + c[2] + '" height="' + c[2] + '" ' +
+      'style="width:' + c[2] + 'px;height:' + c[2] + 'px;' +
+      'left:calc(50% + ' + c[0] + 'px);top:calc(50% + ' + c[1] + 'px);' +
+      'transform:translate(-50%,-50%)">';
+  }).join('') + '</div>';
+}
+
+document.getElementById('grid').innerHTML = COINS.map(function(c, i){
+  var flag = c.best ? '<div class="badge badge--best">&#9733; BEST VALUE</div>'
+           : (c.bonus ? '<div class="badge">' + esc(c.bonus) + '</div>' : '');
+  return '<div class="card" id="coins-' + c.amount + '" style="background:' + c.color + '">'
+       +   flag
+       +   '<div class="art">'
+       +     pile(c.coins)
+       +     '<div class="dots"></div><div class="fade"></div>'
+       +     '<div class="meta"><div class="row">'
+       +       '<span class="amount">' + esc(c.label) + '</span>'
+       +       '<span class="price">' + esc(c.price) + '</span>'
+       +     '</div></div>'
+       +   '</div>'
+       +   '<div class="body">'
+       +     '<div class="desc">' + esc(c.desc) + '</div>'
+       +     '<a class="btn" data-i="' + i + '">BUY COINS</a>'
+       +   '</div>'
+       + '</div>';
+}).join('');
+
+/* deep link: /shop/invincicoins/#coins-1300 highlights that pack */
+(function(){
+  var id = (location.hash || '').replace('#','');
+  if (!id) return;
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('is-target');
+  el.scrollIntoView({ block:'center' });
+})();
+
+try {
+  var saved = localStorage.getItem('iwb_mc_user');
+  if (saved) document.getElementById('mcUser').value = saved;
+} catch(e){}
+
+document.getElementById('grid').addEventListener('click', function(ev){
+  var btn = ev.target.closest('.btn');
+  if (!btn) return;
+
+  var pack  = COINS[+btn.getAttribute('data-i')];
+  var input = document.getElementById('mcUser');
+  var msg   = document.getElementById('mcMsg');
+  var name  = (input.value || '').trim();
+  msg.textContent = '';
+
+  if (!name) {
+    msg.style.color = '#ff5a5a';
+    msg.textContent = 'Enter your Minecraft username first.';
+    input.focus();
+    return;
+  }
+  try { localStorage.setItem('iwb_mc_user', name); } catch(e){}
+
+  var restore = btn.textContent;
+  btn.textContent = 'LOADING...';
+  btn.setAttribute('aria-disabled', 'true');
+
+  fetch(API + '/accounts/' + TOKEN + '/baskets', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body: JSON.stringify({
+      username: name,
+      complete_url: location.origin + '/shop/invincicoins/index.html',
+      cancel_url: location.href,
+      complete_auto_redirect: true
+    })
+  })
+  .then(function(r){ if(!r.ok) throw new Error('basket'); return r.json(); })
+  .then(function(j){
+    var b = j.data, ident = b.ident;
+    var checkout = (b.links && b.links.checkout) || null;
+    return fetch(API + '/baskets/' + ident + '/packages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({ package_id: pack.pkg, quantity: 1 })
+    })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(a){
+      if (a && a.data && a.data.links && a.data.links.checkout) checkout = a.data.links.checkout;
+      return fetch(API + '/accounts/' + TOKEN + '/baskets/' + ident + '/auth?returnUrl=' + encodeURIComponent(checkout || location.href))
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(au){
+          var list = Array.isArray(au) ? au : (au && au.data ? au.data : []);
+          if (list && list.length && list[0] && list[0].url) return list[0].url;
+          return checkout;
+        })
+        .catch(function(){ return checkout; });
+    });
+  })
+  .then(function(dest){
+    if (dest) { location.href = dest; return; }
+    throw new Error('no checkout');
+  })
+  .catch(function(){
+    btn.textContent = restore;
+    btn.removeAttribute('aria-disabled');
+    msg.style.color = '#ff5a5a';
+    msg.textContent = 'Something went wrong — please try again.';
+  });
+});
+</script>
+</body>
+</html>
