@@ -3,22 +3,404 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Forum — Invincible Incorporated</title>
+  <title>The Forum — Invincible Incorporated</title>
+  <meta name="description" content="Guides, builds, help and bug reports for Invincible Incorporated — the community board.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600;1,700;1,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+  <style>
+    /* post modal — same shape as the one on the home page */
+    .pm-modal{position:fixed;inset:0;z-index:99999;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;font-family:'Barlow',sans-serif;}
+    .pm-modal.open{display:flex;}
+    .pm-bd{position:fixed;inset:0;background:rgba(0,0,0,.72);}
+    .pm-card{position:relative;z-index:1;width:100%;max-width:560px;margin:auto;background:var(--panel);border:2px solid var(--panel-line);padding:26px;}
+    .pm-x{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--muted-3);font-size:18px;cursor:pointer;}
+    .pm-x:hover{color:#fff;}
+    .pm-ey{font-family:'Bangers',cursive;font-size:13px;letter-spacing:2px;color:var(--blue);}
+    .pm-t{font-family:'Anton',sans-serif;font-style:italic;font-size:30px;color:#fff;margin:2px 0 18px;}
+    .pm-f{margin-bottom:14px;}
+    .pm-f label{font-weight:800;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#c7ccd6;display:block;margin-bottom:6px;}
+    .pm-f input,.pm-f textarea,.pm-f select{width:100%;border:2px solid var(--input-line);background:var(--input-bg);padding:11px 14px;font-family:'Barlow';font-size:15px;color:#fff;outline:none;}
+    .pm-f textarea{height:150px;resize:vertical;line-height:1.5;}
+    .pm-f input:focus,.pm-f textarea:focus,.pm-f select:focus{border-color:var(--blue);}
+    .pm-f input::placeholder,.pm-f textarea::placeholder{color:var(--muted-3);}
+    .pm-send{font-family:'Anton',sans-serif;font-style:italic;font-size:17px;color:#fff;background:var(--blue);border:2px solid var(--blue);padding:12px 28px;cursor:pointer;}
+    .pm-send:hover{background:var(--yellow);border-color:var(--yellow);color:#111;}
+    .pm-send:disabled{opacity:.6;cursor:not-allowed;}
+    .pm-st{margin-top:12px;font-size:13px;font-weight:600;display:none;}
+    .pm-st.show{display:block;}
+  </style>
 </head>
 <body data-page="forum">
   <div id="site-header"></div>
-  <main class="page">
-    <div class="page-eyebrow">THE COMMUNITY</div>
-    <h1>THE <span class="accent">FORUM</span></h1>
-    <p class="lede">Discussion, builds, bug reports and feature talk. For now the action is in Discord — jump in there.</p>
-    <span class="soon">Coming soon</span>
+
+  <main class="forum" id="forum">
+    <!-- board and thread views are both rendered in here -->
   </main>
+
   <div id="site-footer"></div>
+
+  <!-- ============================ NEW THREAD MODAL ============================ -->
+  <div class="pm-modal" id="pmModal" role="dialog" aria-modal="true" aria-labelledby="pmTitle">
+    <div class="pm-bd" data-pmclose></div>
+    <div class="pm-card">
+      <button class="pm-x" type="button" data-pmclose aria-label="Close">✕</button>
+      <div class="pm-ey">START A THREAD</div>
+      <div class="pm-t" id="pmTitle">New thread</div>
+      <div class="pm-f">
+        <label for="pmCat">Category</label>
+        <select id="pmCat"></select>
+      </div>
+      <div class="pm-f"><label for="pmTtl">Title *</label><input id="pmTtl" maxlength="140" placeholder="e.g. Best way to unlock Demon Magic?"></div>
+      <div class="pm-f"><label for="pmBody">Your post *</label><textarea id="pmBody" maxlength="6000" placeholder="Say what you mean — screenshots and steps help a lot for bugs."></textarea></div>
+      <div class="pm-f"><label for="pmName">Your name</label><input id="pmName" maxlength="80" placeholder="Anonymous Hero"></div>
+      <button class="pm-send" type="button" id="pmSend">POST THREAD</button>
+      <div class="pm-st" id="pmSt" role="status"></div>
+    </div>
+  </div>
+
   <script src="/site.js"></script>
+  <script>
+  /* =====================================================================
+     THE FORUM — a moderated community board. No accounts: anyone can post,
+     nothing shows up until it's approved in Supabase.
+
+     ---------------------------------------------------------------------
+     ONE-TIME SETUP — paste this into the Supabase SQL editor:
+
+       create table forum_threads (
+         id         bigint generated always as identity primary key,
+         created_at timestamptz not null default now(),
+         category   text    not null default 'general',
+         title      text    not null,
+         body       text    not null,
+         author     text    not null default 'Anonymous Hero',
+         approved   boolean not null default false,
+         pinned     boolean not null default false,
+         locked     boolean not null default false
+       );
+
+       create table forum_replies (
+         id         bigint generated always as identity primary key,
+         thread_id  bigint  not null references forum_threads(id) on delete cascade,
+         created_at timestamptz not null default now(),
+         body       text    not null,
+         author     text    not null default 'Anonymous Hero',
+         approved   boolean not null default false
+       );
+
+       create view public_forum_threads as
+         select t.id, t.created_at, t.category, t.title, t.body, t.author,
+                t.pinned, t.locked,
+                (select count(*) from forum_replies r
+                  where r.thread_id = t.id and r.approved) as replies
+           from forum_threads t
+          where t.approved;
+
+       create view public_forum_replies as
+         select id, thread_id, created_at, body, author
+           from forum_replies where approved;
+
+       alter table forum_threads enable row level security;
+       alter table forum_replies enable row level security;
+       create policy "anon can post threads" on forum_threads
+         for insert to anon with check (approved = false);
+       create policy "anon can post replies" on forum_replies
+         for insert to anon with check (approved = false);
+
+     Then flip `approved` to true on anything you want visible.
+     Until the tables exist the page shows a "not open yet" state — it
+     won't error.
+     ===================================================================== */
+
+  var SUPABASE_URL = "https://dqcpcphqcqghpitcrbwn.supabase.co";
+  var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxY3BjcGhxY3FnaHBpdGNyYnduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MzU1MzksImV4cCI6MjA5NzQxMTUzOX0.g28bLrYNBatu_QfSoO6uDY6LEMyhm0RvJflLlhWwCNo";
+  var DISCORD_URL  = "https://discord.gg/R9QC25BS8n";
+
+  /* Add, rename or re-order boards here. `id` is what's stored in the row. */
+  var CATEGORIES = [
+    { id:'help',        name:'Help & Questions', color:'#2E6BFF', blurb:'Stuck on something? Ask here.' },
+    { id:'guides',      name:'Guides',           color:'#9eff2a', blurb:'Write-ups worth keeping.' },
+    { id:'builds',      name:'Builds & Showcase',color:'#FFD23D', blurb:'Show off bases, suits and fights.' },
+    { id:'bugs',        name:'Bug Reports',      color:'#E11515', blurb:'Something broken? Steps to reproduce, please.' },
+    { id:'suggestions', name:'Suggestions',      color:'#8B2FE0', blurb:'Ideas for the mod and the server.' },
+    { id:'general',     name:'General',          color:'#6b7280', blurb:'Everything else.' }
+  ];
+
+  (function(){
+    var state = { threads:[], cat:'all', q:'', sort:'latest', loaded:false, ok:true };
+    var root  = document.getElementById('forum');
+
+    function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+    function cat(id){ return CATEGORIES.filter(function(c){return c.id===id;})[0] ||
+      { id:id, name:id||'General', color:'#6b7280', blurb:'' }; }
+    function ago(iso){
+      var s=Math.floor((Date.now()-new Date(iso).getTime())/1000);
+      if(isNaN(s))return"";
+      if(s<60)return"just now";
+      var m=Math.floor(s/60); if(m<60)return m+"m ago";
+      var h=Math.floor(m/60); if(h<24)return h+"h ago";
+      var d=Math.floor(h/24); if(d<30)return d+"d ago";
+      return Math.floor(d/30)+"mo ago";
+    }
+    function param(k){ return new URLSearchParams(location.search).get(k); }
+    /* Give up after 8s rather than spinning forever if the database is
+       unreachable — the caller falls back to the "not open yet" state. */
+    function api(path){
+      var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var timer = setTimeout(function(){ if (ctrl) ctrl.abort(); }, 8000);
+      return fetch(SUPABASE_URL+"/rest/v1/"+path, {
+        headers:{ apikey:SUPABASE_KEY, Authorization:"Bearer "+SUPABASE_KEY },
+        signal: ctrl ? ctrl.signal : undefined
+      })
+      .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+      .then(function(d){ clearTimeout(timer); return d; },
+            function(e){ clearTimeout(timer); throw e; });
+    }
+
+    /* ---------------- shared chrome ---------------- */
+    function headerHtml(){
+      return '<div class="forum-head">' +
+        '<div><div class="page-eyebrow">THE COMMUNITY</div>' +
+        '<h1>THE <span class="accent">FORUM</span></h1>' +
+        '<p class="forum-lede">Guides, builds, help and bug reports — the stuff worth keeping around ' +
+        'and finding again later. Day-to-day chat still lives in Discord.</p></div>' +
+        '<button class="forum-new" type="button" id="newThread">+ NEW THREAD</button></div>';
+    }
+
+    /* ---------------- board view ---------------- */
+    function visible(){
+      var list = state.threads.filter(function(t){
+        if (state.cat !== 'all' && t.category !== state.cat) return false;
+        if (!state.q) return true;
+        var hay = (t.title + ' ' + t.body + ' ' + (t.author||'')).toLowerCase();
+        return hay.indexOf(state.q) >= 0;
+      });
+      list.sort(function(a,b){
+        if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+        if (state.sort === 'replies') return (b.replies||0) - (a.replies||0);
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      return list;
+    }
+
+    function threadRow(t){
+      var c = cat(t.category);
+      var body = String(t.body||'').replace(/\s+/g,' ').trim();
+      return '<a class="thread-row" style="--fc:'+c.color+'" href="/forum/?t='+encodeURIComponent(t.id)+'">' +
+        '<span class="thread-bar"></span>' +
+        '<span class="thread-main">' +
+          '<span class="thread-title">'+esc(t.title)+
+            (t.pinned ? '<span class="thread-flag thread-flag--pin">Pinned</span>' : '')+
+            (t.locked ? '<span class="thread-flag thread-flag--lock">Locked</span>' : '')+'</span>' +
+          '<span class="thread-meta"><span class="thread-cat">'+esc(c.name)+'</span>&middot;' +
+            '<span class="thread-author">'+esc(t.author||'Anonymous Hero')+'</span>&middot;' +
+            '<span>'+ago(t.created_at)+'</span></span>' +
+          '<span class="thread-excerpt">'+esc(body)+'</span>' +
+        '</span>' +
+        '<span class="thread-replies"><span class="n">'+(t.replies||0)+'</span>' +
+          '<span class="l">'+((t.replies===1)?'reply':'replies')+'</span></span>' +
+        '</a>';
+    }
+
+    function catChips(){
+      var counts = {}; state.threads.forEach(function(t){ counts[t.category]=(counts[t.category]||0)+1; });
+      var chips = '<button class="fchip'+(state.cat==='all'?' is-active':'')+'" data-cat="all">All' +
+        '<span class="fcount">'+state.threads.length+'</span></button>';
+      chips += CATEGORIES.map(function(c){
+        return '<button class="fchip'+(state.cat===c.id?' is-active':'')+'" data-cat="'+c.id+'" style="--fc:'+c.color+'">' +
+          '<span class="fdot"></span>'+esc(c.name)+'<span class="fcount">'+(counts[c.id]||0)+'</span></button>';
+      }).join('');
+      return '<div class="forum-cats">'+chips+'</div>';
+    }
+
+    function emptyState(){
+      if (!state.ok){
+        return '<div class="forum-state"><div class="ico">🚧</div>' +
+          '<div class="t">The forum isn\'t open yet</div>' +
+          '<p>The board is built but its tables aren\'t live on the server yet. ' +
+          'Until then, Discord is the place to talk.</p>' +
+          '<div class="row"><a class="alt" href="'+DISCORD_URL+'" target="_blank" rel="noopener">JOIN THE DISCORD →</a></div></div>';
+      }
+      if (state.q || state.cat !== 'all'){
+        return '<div class="forum-state"><div class="ico">🔍</div>' +
+          '<div class="t">Nothing matches</div>' +
+          '<p>No threads here yet. Try another board, or clear the search.</p></div>';
+      }
+      return '<div class="forum-state"><div class="ico">💬</div>' +
+        '<div class="t">No threads yet</div>' +
+        '<p>Be the first to post. Guides, questions, bug reports and builds all belong here — ' +
+        'threads are checked before they go live.</p>' +
+        '<div class="row"><button class="forum-new" type="button" id="newThreadEmpty">+ START THE FIRST THREAD</button>' +
+        '<a class="alt" href="'+DISCORD_URL+'" target="_blank" rel="noopener">JOIN THE DISCORD →</a></div></div>';
+    }
+
+    function renderBoard(){
+      var list = visible();
+      root.innerHTML = headerHtml() +
+        '<div class="forum-bar">' +
+          '<label class="forum-search"><span aria-hidden="true">🔍</span>' +
+            '<input id="q" type="search" placeholder="Search threads…" value="'+esc(state.q)+'" autocomplete="off"></label>' +
+          '<select class="forum-sort" id="sort">' +
+            '<option value="latest"'+(state.sort==='latest'?' selected':'')+'>Newest first</option>' +
+            '<option value="replies"'+(state.sort==='replies'?' selected':'')+'>Most replies</option>' +
+          '</select>' +
+        '</div>' +
+        (state.loaded ? catChips() : '') +
+        (!state.loaded
+          ? '<div class="forum-state"><div class="ico">⏳</div><div class="t">Loading the board…</div></div>'
+          : (list.length ? '<div class="thread-list">'+list.map(threadRow).join('')+'</div>' : emptyState()));
+      wireBoard();
+    }
+
+    function wireBoard(){
+      var q = document.getElementById('q');
+      if (q) q.addEventListener('input', function(){
+        state.q = this.value.trim().toLowerCase();
+        var pos = this.selectionStart; renderBoard();
+        var again = document.getElementById('q'); again.focus(); again.setSelectionRange(pos,pos);
+      });
+      var sort = document.getElementById('sort');
+      if (sort) sort.addEventListener('change', function(){ state.sort = this.value; renderBoard(); });
+      document.querySelectorAll('[data-cat]').forEach(function(b){
+        b.addEventListener('click', function(){ state.cat = b.getAttribute('data-cat'); renderBoard(); });
+      });
+      ['newThread','newThreadEmpty'].forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('click', openModal);
+      });
+    }
+
+    /* ---------------- thread view ---------------- */
+    function post(p, isOp){
+      return '<article class="post'+(isOp?' post--op':'')+'">' +
+        '<div class="post-top"><span class="post-author">'+esc(p.author||'Anonymous Hero')+'</span>' +
+        '<span class="post-time">'+ago(p.created_at)+'</span></div>' +
+        '<p class="post-body">'+esc(p.body)+'</p></article>';
+    }
+
+    function renderThread(t, replies){
+      var c = cat(t.category);
+      root.classList.add('thread-view');
+      root.innerHTML =
+        '<nav class="crumbs"><a href="/forum/">Forum</a> / <span>'+esc(c.name)+'</span></nav>' +
+        '<div class="thread-head" style="--fc:'+c.color+'">' +
+          '<div class="thread-cat" style="--fc:'+c.color+'">'+esc(c.name)+
+            (t.pinned ? '<span class="thread-flag thread-flag--pin">Pinned</span>' : '')+
+            (t.locked ? '<span class="thread-flag thread-flag--lock">Locked</span>' : '')+'</div>' +
+          '<h1>'+esc(t.title)+'</h1></div>' +
+        '<div style="--fc:'+c.color+'">'+ post(t, true) +'</div>' +
+        '<div class="replies-head">REPLIES <span>'+replies.length+'</span></div>' +
+        (replies.length
+          ? '<div style="--fc:'+c.color+'">'+replies.map(function(r){return post(r,false);}).join('')+'</div>'
+          : '<div class="forum-state" style="padding:34px 24px"><div class="t">No replies yet</div>' +
+            '<p style="margin-bottom:0">Be the first to answer.</p></div>') +
+        (t.locked
+          ? '<div class="locked-note">This thread is locked — no new replies.</div>'
+          : '<div class="reply-box"><h3>Post a reply</h3>' +
+            '<div class="pm-f"><label for="rBody">Your reply *</label>' +
+            '<textarea id="rBody" maxlength="6000" placeholder="Keep it useful."></textarea></div>' +
+            '<div class="pm-f"><label for="rName">Your name</label>' +
+            '<input id="rName" maxlength="80" placeholder="Anonymous Hero"></div>' +
+            '<button class="pm-send" type="button" id="rSend">POST REPLY</button>' +
+            '<div class="pm-st" id="rSt" role="status"></div></div>');
+
+      var send = document.getElementById('rSend');
+      if (send) send.addEventListener('click', function(){
+        var body = document.getElementById('rBody').value.trim();
+        var name = document.getElementById('rName').value.trim() || 'Anonymous Hero';
+        var st = document.getElementById('rSt');
+        function set(col,msg){ st.className='pm-st show'; st.style.color=col; st.textContent=msg; }
+        if (!body){ set('#ff9a9a','Write something first.'); return; }
+        send.disabled = true; set('#cdd2da','Sending…');
+        fetch(SUPABASE_URL+"/rest/v1/forum_replies", {
+          method:"POST",
+          headers:{ apikey:SUPABASE_KEY, Authorization:"Bearer "+SUPABASE_KEY,
+                    "Content-Type":"application/json", Prefer:"return=minimal" },
+          body: JSON.stringify({ thread_id:t.id, body:body, author:name })
+        })
+        .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status);
+          set('#9eff2a','Sent — it appears once it\'s approved.');
+          document.getElementById('rBody').value = '';
+        })
+        .catch(function(e){ set('#ff9a9a','Could not send ('+e.message+').'); })
+        .then(function(){ send.disabled = false; });
+      });
+    }
+
+    function notFound(){
+      root.innerHTML = headerHtml() +
+        '<div class="forum-state"><div class="ico">🕳️</div><div class="t">Thread not found</div>' +
+        '<p>That thread doesn\'t exist, or it hasn\'t been approved yet.</p>' +
+        '<div class="row"><a class="alt" style="background:var(--blue)" href="/forum/">BACK TO THE FORUM →</a></div></div>';
+      wireBoard();
+    }
+
+    /* ---------------- new thread modal ---------------- */
+    function openModal(){
+      document.getElementById('pmModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('pmTtl').focus();
+    }
+    function closeModal(){
+      document.getElementById('pmModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('pmCat').innerHTML = CATEGORIES.map(function(c){
+      return '<option value="'+c.id+'">'+esc(c.name)+' — '+esc(c.blurb)+'</option>';
+    }).join('');
+    document.querySelectorAll('[data-pmclose]').forEach(function(e){ e.addEventListener('click', closeModal); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+
+    document.getElementById('pmSend').addEventListener('click', function(){
+      var btn = this;
+      var ttl  = document.getElementById('pmTtl').value.trim();
+      var body = document.getElementById('pmBody').value.trim();
+      var name = document.getElementById('pmName').value.trim() || 'Anonymous Hero';
+      var cid  = document.getElementById('pmCat').value;
+      var st   = document.getElementById('pmSt');
+      function set(col,msg){ st.className='pm-st show'; st.style.color=col; st.textContent=msg; }
+      if (!ttl || !body){ set('#ff9a9a','Give it a title and a post.'); return; }
+      btn.disabled = true; set('#cdd2da','Sending…');
+      fetch(SUPABASE_URL+"/rest/v1/forum_threads", {
+        method:"POST",
+        headers:{ apikey:SUPABASE_KEY, Authorization:"Bearer "+SUPABASE_KEY,
+                  "Content-Type":"application/json", Prefer:"return=minimal" },
+        body: JSON.stringify({ category:cid, title:ttl, body:body, author:name })
+      })
+      .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status);
+        set('#9eff2a','Posted — it goes live once it\'s approved.');
+        ['pmTtl','pmBody','pmName'].forEach(function(id){ document.getElementById(id).value = ''; });
+      })
+      .catch(function(e){ set('#ff9a9a','Could not post ('+e.message+').'); })
+      .then(function(){ btn.disabled = false; });
+    });
+
+    /* ---------------- boot ---------------- */
+    var tid = param('t');
+    if (tid){
+      Promise.all([
+        api("public_forum_threads?id=eq."+encodeURIComponent(tid)),
+        api("public_forum_replies?thread_id=eq."+encodeURIComponent(tid)+"&order=created_at.asc")
+      ])
+      .then(function(res){
+        var t = (res[0]||[])[0];
+        if (!t) return notFound();
+        document.title = t.title + " — Invincible Inc Forum";
+        renderThread(t, res[1]||[]);
+      })
+      .catch(function(){ notFound(); });
+    } else {
+      renderBoard();
+      api("public_forum_threads?order=created_at.desc")
+        .then(function(d){ state.threads = Array.isArray(d)?d:[]; })
+        .catch(function(){ state.ok = false; state.threads = []; })
+        .then(function(){ state.loaded = true; renderBoard(); });
+    }
+  })();
+  </script>
 </body>
 </html>

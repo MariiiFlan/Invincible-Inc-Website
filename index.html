@@ -35,13 +35,10 @@
   .pm-f textarea{height:120px;resize:none;}
   .pm-f input:focus,.pm-f textarea:focus{border-color:var(--blue);}
   .pm-f input::placeholder,.pm-f textarea::placeholder{color:var(--muted-3);}
-  .pm-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .pm-send{font-family:'Anton',sans-serif;font-style:italic;font-size:17px;color:#fff;background:var(--blue);border:2px solid var(--blue);padding:12px 28px;cursor:pointer;}
   .pm-send:hover{background:var(--yellow);border-color:var(--yellow);color:#111;}
   .pm-st{margin-top:12px;font-size:13px;font-weight:600;display:none;}
   .pm-st.show{display:block;}
-  .pm-fine{font-size:11px;color:var(--muted-3);margin-top:12px;line-height:1.5;}
-  @media (max-width:560px){.pm-row{grid-template-columns:1fr;}}
 
   /* ---------- feedback wall cards ---------- */
   .w-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;align-items:start;}
@@ -82,10 +79,10 @@
         <span class="hc-name">POWERS &amp; RACES</span>
         <p class="hc-desc">Every power, race, bloodline and stat — documented.</p>
       </a>
-      <a class="hero-card" href="/server">
-        <span class="hc-kicker">NOW LIVE</span>
-        <span class="hc-name">THE SERVER</span>
-        <p class="hc-desc">Online now on 1.21.1 — invincibleinc.mcserver.us. Factions, PVP &amp; a living hero economy.</p>
+      <a class="hero-card hero-card--soon" href="/server">
+        <span class="hc-kicker">THE FUN</span>
+        <span class="hc-name">SERVER — SOON</span>
+        <p class="hc-desc">Factions, PVP and a living hero economy.</p>
       </a>
     </div>
   </div>
@@ -96,7 +93,7 @@
   <div class="whatsnew-inner">
     <div class="whatsnew-head">
       <div>
-        <div class="whatsnew-eyebrow">NOW LIVE</div>
+        <div class="whatsnew-eyebrow">COMING SOON</div>
         <h2 class="whatsnew-title">WHAT'S IN <span class="accent">v2.0</span></h2>
         <p class="whatsnew-sub">Lineage / Server Ready is the biggest update the mod has had — a full economy, two new powers, rebuilt groups, and a flight system that finally looks like the show.</p>
       </div>
@@ -204,11 +201,11 @@
     </div>
     <div class="panel-row">
       <span class="eyebrow eyebrow--green">THE FUN</span>
-      <span class="tag tag--green">Live</span>
+      <span class="tag tag--green">Coming soon</span>
     </div>
     <div class="panel-stack">
       <div class="ptitle">THE SERVER</div>
-      <p class="pdesc pdesc--green">Online now on 1.21.1 — invincibleinc.mcserver.us. Factions, seasons and a hero economy.</p>
+      <p class="pdesc pdesc--green">Coming soon for 1.21.1 — factions, seasons and a hero economy.</p>
     </div>
     <div class="pcta pcta--green">JOIN →</div>
   </a>
@@ -266,13 +263,9 @@
     <div class="pm-seg" id="pmScope"><button class="on" type="button" data-ps="mod">🧪 Mod</button><button type="button" data-ps="server">🖥 Server</button></div>
     <div class="pm-f"><label for="pmTtl">Title *</label><input id="pmTtl" maxlength="120" placeholder="e.g. Add a grappling power"></div>
     <div class="pm-f"><label for="pmBody">Details *</label><textarea id="pmBody" maxlength="3000" placeholder="What should it do / what happened?"></textarea></div>
-    <div class="pm-row">
-      <div class="pm-f"><label for="pmName">Your name</label><input id="pmName" maxlength="80" placeholder="Anonymous Hero"></div>
-      <div class="pm-f"><label for="pmDisc">Discord user ID *</label><input id="pmDisc" maxlength="40" placeholder="123456789012345678"></div>
-    </div>
+    <div class="pm-f"><label for="pmName">Your name</label><input id="pmName" maxlength="80" placeholder="Anonymous Hero"></div>
     <button class="pm-send" type="button" id="pmSend">SEND</button>
     <div class="pm-st" id="pmSt" role="status"></div>
-    <p class="pm-fine">Reviewed before it appears on the wall. Enable Discord Developer Mode → right-click your name → Copy User ID.</p>
   </div>
 </div>
 
@@ -285,6 +278,10 @@
    ===================================================================== */
 var SUPABASE_URL = "https://dqcpcphqcqghpitcrbwn.supabase.co";
 var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxY3BjcGhxY3FnaHBpdGNyYnduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MzU1MzksImV4cCI6MjA5NzQxMTUzOX0.g28bLrYNBatu_QfSoO6uDY6LEMyhm0RvJflLlhWwCNo";
+/* The form no longer asks for a Discord ID — posts are stamped with this
+   placeholder so the database column stays happy. */
+var DEFAULT_DISCORD_ID = "000000000000000000";
+
 var WEBHOOK_URL  = "https://discord.com/api/webhooks/1517400828619522078/8ajOISwMQmmDyLYs5kV_H07XagU9W4rYt9i3LCyDja8ouvm3k7PmL_JFE--ppyZNLC5K";
 
 var WALL = { tab:"suggestions", scope:"all", posts:[], loading:true };
@@ -390,15 +387,13 @@ document.addEventListener("DOMContentLoaded",function(){
     var btn=this;
     var ttl=document.getElementById("pmTtl").value.trim(),
         body=document.getElementById("pmBody").value.trim(),
-        disc=document.getElementById("pmDisc").value.trim(),
         name=document.getElementById("pmName").value.trim()||"Anonymous Hero";
     var st=document.getElementById("pmSt");
     function set(c,m){st.className="pm-st show";st.style.color=c;st.textContent=m;}
-    if(!ttl||!body||!disc){set("#ff9a9a","Fill in the title, details, and your Discord ID.");return;}
-    if(!/^\d{15,25}$/.test(disc)){set("#ff9a9a","That doesn't look like a Discord user ID — it's a long number, not your username.");return;}
+    if(!ttl||!body){set("#ff9a9a","Fill in the title and the details.");return;}
     if(!SUPABASE_URL||!SUPABASE_KEY){set("#cdd2da","Not connected yet — add SUPABASE_URL and SUPABASE_KEY near the top of index.html.");return;}
     btn.disabled=true; set("#cdd2da","Sending…");
-    var rec={type:pmType,scope:pmScope,title:ttl,body:body,author:name,discord_id:disc};
+    var rec={type:pmType,scope:pmScope,title:ttl,body:body,author:name,discord_id:DEFAULT_DISCORD_ID};
     fetch(SUPABASE_URL+"/rest/v1/suggestions",{method:"POST",headers:{apikey:SUPABASE_KEY,Authorization:"Bearer "+SUPABASE_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify(rec)})
       .then(function(r){
         if(!r.ok) throw new Error("HTTP "+r.status);
@@ -412,14 +407,13 @@ document.addEventListener("DOMContentLoaded",function(){
               description:body.slice(0,4000),
               color:isBug?0xE11515:0x2E6BFF,
               fields:[{name:"Scope",value:pmScope==="server"?"Server":"Mod",inline:true},
-                      {name:"By",value:name,inline:true},
-                      {name:"Discord ID",value:disc,inline:false}],
+                      {name:"By",value:name,inline:true}],
               timestamp:new Date().toISOString()
             }]
           })}).catch(function(){});
         }
         set("#9eff2a","Sent! It appears on the wall once it's approved.");
-        ["pmTtl","pmBody","pmDisc","pmName"].forEach(function(id){document.getElementById(id).value="";});
+        ["pmTtl","pmBody","pmName"].forEach(function(id){document.getElementById(id).value="";});
       })
       .catch(function(e){set("#ff9a9a","Could not send ("+e.message+"). Try again in a moment.");})
       .then(function(){btn.disabled=false;});
